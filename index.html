@@ -82,18 +82,11 @@
   .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 10px; }
   .stat-label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
 
-  /* ДАШБОРД (Научный анализ) */
-  .dashboard { display: grid; grid-template-columns: 300px 1fr; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-  @media (max-width: 900px) { .dashboard { grid-template-columns: 1fr; } }
+  /* ДАШБОРД (Интерактивная модель) */
+  .dashboard { display: grid; grid-template-columns: 320px 1fr; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  @media (max-width: 900px) { .dashboard { grid-template-columns: 1fr !important; } }
   
-  .control-panel { display: flex; flex-direction: column; gap: 20px; }
-  .btn-outline-active {
-    background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #e2e8f0;
-    padding: 12px 20px; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 14px;
-  }
-  .btn-outline-active:hover { background: rgba(255,255,255,0.05); }
-  .btn-outline-active.active { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
-  
+  .control-panel { display: flex; flex-direction: column; gap: 10px; }
   .charts-area { display: flex; flex-direction: column; gap: 20px; }
   .chart-box { background: #0a192f; border-radius: 16px; padding: 20px; position: relative; display: flex; flex-direction: column; }
   .chart-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; color: var(--text-muted); }
@@ -190,64 +183,98 @@
   </div>
 </section>
 
-<!-- НАУЧНАЯ ДЕМОНСТРАЦИЯ (SENSITIVITY ANALYSIS) -->
+<!-- ИНТЕРАКТИВНАЯ МОДЕЛЬ ЧУВСТВИТЕЛЬНОСТИ -->
 <section id="demo" class="section-dark">
   <div class="container">
-    <h2 class="section-title" style="color: #fff;">Анализ чувствительности модели</h2>
-    <p class="section-subtitle">Исследуйте, как изменение ключевых параметров скважины влияет на межремонтный период (МРП) и экономический эффект.</p>
+    <h2 class="section-title" style="color: #fff;">Интерактивная модель чувствительности</h2>
+    <p class="section-subtitle">Задайте базовые условия скважины — графики пересчитаются автоматически.</p>
 
-    <div class="dashboard" style="grid-template-columns: 300px 1fr;">
+    <div class="dashboard" style="grid-template-columns: 320px 1fr;">
       <!-- Панель управления -->
       <div class="control-panel">
-        <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.2rem;">Выберите параметр</h3>
-        
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          <button class="btn-outline-active" onclick="changeParam('paraffin', this)">Содержание парафина</button>
-          <button class="btn-outline-active" onclick="changeParam('temp', this)">Температура нефти</button>
-          <button class="btn-outline-active" onclick="changeParam('debit', this)">Дебит скважины</button>
+        <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">Базовые условия</h3>
+
+        <div style="margin-bottom: 18px;">
+          <label style="display:flex; justify-content:space-between; font-size:13px; color:#94a3b8; margin-bottom:6px;">
+            <span>Содержание парафина</span><b id="val-paraffin" style="color:#00f2fe;">9.2 %</b>
+          </label>
+          <input type="range" id="in-paraffin" min="1" max="30" step="0.1" value="9.2"
+                 style="width:100%; accent-color:#3b82f6;">
         </div>
 
-        <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-          <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">Базовые условия:</p>
-          <ul style="font-size: 13px; color: #e2e8f0; list-style: none; padding: 0;">
-            <li style="margin-bottom: 5px;">Дебит: <b id="base-debit">45</b> т/сут</li>
-            <li style="margin-bottom: 5px;">Парафин: <b id="base-paraffin">9.2</b> %</li>
-            <li>Температура: <b id="base-temp">30</b> °C</li>
+        <div style="margin-bottom: 18px;">
+          <label style="display:flex; justify-content:space-between; font-size:13px; color:#94a3b8; margin-bottom:6px;">
+            <span>Температура нефти (устье)</span><b id="val-temp" style="color:#00f2fe;">30 °C</b>
+          </label>
+          <input type="range" id="in-temp" min="10" max="90" step="1" value="30"
+                 style="width:100%; accent-color:#3b82f6;">
+        </div>
+
+        <div style="margin-bottom: 18px;">
+          <label style="display:flex; justify-content:space-between; font-size:13px; color:#94a3b8; margin-bottom:6px;">
+            <span>Дебит скважины</span><b id="val-debit" style="color:#00f2fe;">45 т/сут</b>
+          </label>
+          <input type="range" id="in-debit" min="5" max="150" step="1" value="45"
+                 style="width:100%; accent-color:#3b82f6;">
+        </div>
+
+        <div style="padding:16px; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+          <p style="font-size:13px; color:#94a3b8; margin-bottom:8px;">Расчётные показатели:</p>
+          <ul style="font-size:13px; color:#e2e8f0; list-style:none; padding:0;">
+            <li style="margin-bottom:5px;">МРП: <b id="out-mrp" style="color:#00f2fe;">—</b> дней</li>
+            <li style="margin-bottom:5px;">WAT: <b id="out-wat" style="color:#00f2fe;">—</b> °C</li>
+            <li>Глубина выпадения АСПО: <b id="out-depth" style="color:#00f2fe;">—</b> м</li>
           </ul>
         </div>
       </div>
 
-      <!-- График -->
+      <!-- Графики -->
       <div class="charts-area">
-        <div class="chart-box" style="height: 100%;">
+        <!-- График 1: МРП vs содержание парафина -->
+        <div class="chart-box">
           <div class="chart-header">
-            <span id="chart-title">Влияние содержания парафина на МРП</span>
+            <span>МРП в зависимости от содержания парафина</span>
             <span>МРП (дней)</span>
           </div>
-          
-          <svg id="sensitivity-chart" viewBox="0 0 600 300" style="width: 100%; height: auto;">
-            <line x1="50" y1="250" x2="580" y2="250" stroke="#1e3a8a" stroke-width="2"/>
-            <line x1="50" y1="20" x2="50" y2="250" stroke="#1e3a8a" stroke-width="2"/>
-            
-            <line x1="50" y1="200" x2="580" y2="200" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="50" y1="150" x2="580" y2="150" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="50" y1="100" x2="580" y2="100" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="50" y1="50" x2="580" y2="50" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-
-            <text id="x-label-1" x="50" y="270" fill="#94a3b8" font-size="12" text-anchor="middle">1%</text>
-            <text id="x-label-2" x="315" y="270" fill="#94a3b8" font-size="12" text-anchor="middle">10%</text>
-            <text id="x-label-3" x="580" y="270" fill="#94a3b8" font-size="12" text-anchor="middle">20%</text>
-
-            <path id="sensitivity-path" d="M 50 50 L 315 150 L 580 250" fill="none" stroke="#00f2fe" stroke-width="4" stroke-linejoin="round"/>
-            <g id="sensitivity-dots"></g>
+          <svg id="chart-mrp" viewBox="0 0 600 280" style="width:100%; height:auto;">
+            <line x1="50" y1="240" x2="580" y2="240" stroke="#1e3a8a" stroke-width="2"/>
+            <line x1="50" y1="20" x2="50" y2="240" stroke="#1e3a8a" stroke-width="2"/>
+            <text x="50" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">1%</text>
+            <text x="315" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">15%</text>
+            <text x="580" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">30%</text>
+            <path id="path-mrp" d="" fill="none" stroke="#00f2fe" stroke-width="3"/>
+            <circle id="dot-mrp" r="6" fill="#fff" stroke="#00f2fe" stroke-width="3"/>
           </svg>
         </div>
 
-        <div style="margin-top: 20px; padding: 20px; background: rgba(0, 242, 254, 0.1); border-left: 4px solid #00f2fe; border-radius: 8px; color: #fff;">
-          <h4 style="margin-bottom: 10px; color: #00f2fe;">Научный вывод</h4>
-          <p id="scientific-conclusion" style="font-size: 14px; line-height: 1.6;">
-            При увеличении содержания парафина с 1% до 20% межремонтный период (МРП) сокращается в 8 раз (со 120 до 15 дней). Это требует более частых обработок.
+        <!-- График 2: профиль температуры и WAT -->
+        <div class="chart-box">
+          <div class="chart-header">
+            <span>Профиль температуры по стволу и точка WAT</span>
+            <span>T (°C)</span>
+          </div>
+          <svg id="chart-temp" viewBox="0 0 600 280" style="width:100%; height:auto;">
+            <line x1="50" y1="240" x2="580" y2="240" stroke="#1e3a8a" stroke-width="2"/>
+            <line x1="50" y1="20" x2="50" y2="240" stroke="#1e3a8a" stroke-width="2"/>
+            <text x="50" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">0 м</text>
+            <text x="315" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">1000 м</text>
+            <text x="580" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">2000 м</text>
+            <text x="30" y="30" fill="#94a3b8" font-size="11" text-anchor="middle">90°C</text>
+            <text x="30" y="240" fill="#94a3b8" font-size="11" text-anchor="middle">-20°C</text>
+
+            <path id="path-temp" d="" fill="none" stroke="#60a5fa" stroke-width="3"/>
+            <line id="line-wat" x1="50" y1="0" x2="580" y2="0" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4"/>
+            <text id="label-wat" x="585" y="0" fill="#f59e0b" font-size="11" text-anchor="start">WAT</text>
+            <circle id="dot-wat" r="6" fill="#f59e0b"/>
+          </svg>
+          <p style="font-size:12px; color:#94a3b8; margin-top:8px;">
+            Пересечение синей кривой (T по стволу) и оранжевой линии (WAT) — глубина, ниже которой начинается выпадение парафинов.
           </p>
+        </div>
+
+        <!-- Краткая интерпретация -->
+        <div style="padding:16px 20px; background:rgba(0,242,254,0.08); border-left:4px solid #00f2fe; border-radius:8px; color:#fff;">
+          <p id="interpretation" style="font-size:14px; line-height:1.6; margin:0;"></p>
         </div>
       </div>
     </div>
@@ -519,79 +546,121 @@
 </footer>
 
 <script>
-  // Данные для графиков чувствительности (имитация расчетов вашей Python-модели)
-  const sensitivityData = {
-    paraffin: {
-      title: 'Влияние содержания парафина на МРП',
-      xLabels: ['1%', '10%', '20%'],
-      points: [
-        { x: 50, y: 50, val: 120 },
-        { x: 315, y: 150, val: 60 },
-        { x: 580, y: 250, val: 15 }
-      ],
-      conclusion: 'При увеличении содержания парафина с 1% до 20% межремонтный период (МРП) сокращается в 8 раз (со 120 до 15 дней). Это требует более частых обработок.'
-    },
-    temp: {
-      title: 'Влияние температуры нефти на МРП',
-      xLabels: ['10°C', '40°C', '80°C'],
-      points: [
-        { x: 50, y: 250, val: 10 },
-        { x: 315, y: 100, val: 75 },
-        { x: 580, y: 40, val: 130 }
-      ],
-      conclusion: 'При повышении температуры с 10°C до 80°C МРП увеличивается в 13 раз (с 10 до 130 дней). Тепловая обработка или подогрев нефти критически важны для профилактики АСПО.'
-    },
-    debit: {
-      title: 'Влияние дебита на МРП',
-      xLabels: ['10', '80', '150'],
-      points: [
-        { x: 50, y: 200, val: 30 },
-        { x: 315, y: 100, val: 75 },
-        { x: 580, y: 60, val: 100 }
-      ],
-      conclusion: 'При увеличении дебита с 10 до 150 т/сут МРП возрастает в 3.3 раза. Высокая скорость потока естественным образом препятствует осаждению парафинов на стенках НКТ.'
+  // ===== УПРОЩЁННАЯ МОДЕЛЬ (для демо) =====
+  // В реальной программе коэффициенты калибруются по промысловым данным.
+  const H = 2000;         // глубина ствола, м
+  const T_RES = -20;      // температура среды, °C
+  const T_FORM = 85;      // температура на забое, °C
+
+  function calcWAT(paraffin) { return 20 + 1.2 * paraffin; }               // °C
+  function calcMRP(T, P, Q) {
+    const base = 60;
+    const fT = T / 30;                          // влияние температуры
+    const fP = 1 / (1 + 0.08 * (P - 9.2));      // влияние парафина
+    const fQ = 1 + 0.004 * (Q - 45);            // влияние дебита
+    return Math.max(1, base * fT * fP * fQ);
+  }
+  // Линейный профиль температуры: от T_FORM на забое (h=0) до Twellhead на устье (h=H)
+  function tempProfileLinear(h, Twellhead) {
+    return T_FORM - (T_FORM - Twellhead) * (h / H);
+  }
+  function depthOfWAT(Twellhead, WAT) {
+    // T_FORM - (T_FORM - Twellhead)*(h/H) = WAT  =>  h = H*(T_FORM - WAT)/(T_FORM - Twellhead)
+    if (WAT >= T_FORM) return 0;
+    if (WAT <= Twellhead) return H;
+    return H * (T_FORM - WAT) / (T_FORM - Twellhead);
+  }
+
+  // ===== ОТРИСОВКА =====
+  const X0 = 50, X1 = 580, Y0 = 20, Y1 = 240;
+  function mapX(h) { return X0 + (h / H) * (X1 - X0); }
+  function mapY_T(T, Tmin, Tmax) { return Y1 - ((T - Tmin) / (Tmax - Tmin)) * (Y1 - Y0); }
+
+  function drawMRP(T, P, Q) {
+    // строим кривую МРП по парафину от 1 до 30
+    const pts = [];
+    for (let p = 1; p <= 30; p += 0.5) {
+      const mrp = calcMRP(T, p, Q);
+      pts.push({ p, mrp });
     }
-  };
+    const maxMRP = Math.max(...pts.map(o => o.mrp));
+    const minMRP = Math.min(...pts.map(o => o.mrp));
+    const span = Math.max(1, maxMRP - minMRP);
+    const d = pts.map((o, i) => {
+      const x = X0 + ((o.p - 1) / 29) * (X1 - X0);
+      const y = Y1 - ((o.mrp - minMRP) / span) * (Y1 - Y0);
+      return (i === 0 ? 'M' : 'L') + ` ${x.toFixed(1)} ${y.toFixed(1)}`;
+    }).join(' ');
+    document.getElementById('path-mrp').setAttribute('d', d);
 
-  function changeParam(param, btn) {
-    document.querySelectorAll('.btn-outline-active').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    // точка текущего P
+    const curMrp = calcMRP(T, P, Q);
+    const cx = X0 + ((P - 1) / 29) * (X1 - X0);
+    const cy = Y1 - ((curMrp - minMRP) / span) * (Y1 - Y0);
+    const dot = document.getElementById('dot-mrp');
+    dot.setAttribute('cx', cx);
+    dot.setAttribute('cy', cy);
+    return curMrp;
+  }
 
-    const data = sensitivityData[param];
-    document.getElementById('chart-title').innerText = data.title;
-    
-    document.getElementById('x-label-1').innerText = data.xLabels[0];
-    document.getElementById('x-label-2').innerText = data.xLabels[1];
-    document.getElementById('x-label-3').innerText = data.xLabels[2];
+  function drawTemp(Twellhead, WAT) {
+    const Tmin = T_RES, Tmax = T_FORM;
+    const pts = [];
+    for (let h = 0; h <= H; h += 50) {
+      pts.push({ h, T: tempProfileLinear(h, Twellhead) });
+    }
+    const d = pts.map((o, i) => {
+      const x = mapX(o.h);
+      const y = mapY_T(o.T, Tmin, Tmax);
+      return (i === 0 ? 'M' : 'L') + ` ${x.toFixed(1)} ${y.toFixed(1)}`;
+    }).join(' ');
+    document.getElementById('path-temp').setAttribute('d', d);
 
-    const path = document.getElementById('sensitivity-path');
-    const d = `M ${data.points[0].x} ${data.points[0].y} L ${data.points[1].x} ${data.points[1].y} L ${data.points[2].x} ${data.points[2].y}`;
-    path.setAttribute('d', d);
+    // линия WAT
+    const yWAT = mapY_T(WAT, Tmin, Tmax);
+    document.getElementById('line-wat').setAttribute('y1', yWAT);
+    document.getElementById('line-wat').setAttribute('y2', yWAT);
+    document.getElementById('label-wat').setAttribute('y', yWAT - 4);
 
-    const dotsGroup = document.getElementById('sensitivity-dots');
-    dotsGroup.innerHTML = '';
-    data.points.forEach(p => {
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('cx', p.x);
-      circle.setAttribute('cy', p.y);
-      circle.setAttribute('r', '6');
-      circle.setAttribute('fill', '#fff');
-      circle.setAttribute('stroke', '#00f2fe');
-      circle.setAttribute('stroke-width', '3');
-      
-      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-      title.textContent = `МРП: ${p.val} дней`;
-      circle.appendChild(title);
+    // точка пересечения
+    const depth = depthOfWAT(Twellhead, WAT);
+    const dot = document.getElementById('dot-wat');
+    dot.setAttribute('cx', mapX(depth));
+    dot.setAttribute('cy', yWAT);
+    return depth;
+  }
 
-      dotsGroup.appendChild(circle);
-    });
+  // ===== ОБРАБОТКА ВВОДА =====
+  function update() {
+    const P = parseFloat(document.getElementById('in-paraffin').value);
+    const T = parseFloat(document.getElementById('in-temp').value);
+    const Q = parseFloat(document.getElementById('in-debit').value);
 
-    document.getElementById('scientific-conclusion').innerText = data.conclusion;
+    document.getElementById('val-paraffin').innerText = P.toFixed(1) + ' %';
+    document.getElementById('val-temp').innerText = T.toFixed(0) + ' °C';
+    document.getElementById('val-debit').innerText = Q.toFixed(0) + ' т/сут';
+
+    const WAT = calcWAT(P);
+    const mrp = drawMRP(T, P, Q);
+    const depth = drawTemp(T, WAT);
+
+    document.getElementById('out-mrp').innerText = mrp.toFixed(0);
+    document.getElementById('out-wat').innerText = WAT.toFixed(1);
+    document.getElementById('out-depth').innerText = depth.toFixed(0);
+
+    const depthNote = depth < H
+      ? `Выпадение парафинов начинается с глубины ≈ ${depth.toFixed(0)} м и продолжается до устья.`
+      : `При данных условиях температура по всему стволу выше WAT — выпадение парафинов маловероятно.`;
+    document.getElementById('interpretation').innerText =
+      `При содержании парафина ${P.toFixed(1)}%, температуре нефти ${T}°C и дебите ${Q} т/сут ` +
+      `прогнозируемый МРП составляет ≈ ${mrp.toFixed(0)} дней. ${depthNote}`;
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const firstBtn = document.querySelector('.btn-outline-active');
-    if (firstBtn) changeParam('paraffin', firstBtn);
+    ['in-paraffin','in-temp','in-debit'].forEach(id => {
+      document.getElementById(id).addEventListener('input', update);
+    });
+    update();
   });
 </script>
 
