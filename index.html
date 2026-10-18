@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Прогнозирование АСПО — ПО на Python</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    background: #0f1a24;
+    color: #e6edf3;
+    line-height: 1.6;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0f1a24 0%, #1a3a4a 100%);
+    padding: 5rem 0 4rem;
+    text-align: center;
+    border-bottom: 3px solid #f0a500;
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #f0a500, #ffd166);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .subtitle {
+    font-size: 1.15rem;
+    color: #9fb3c8;
+    max-width: 750px;
+    margin: 0 auto 2rem;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: #f0a50020;
+    border: 1px solid #f0a500;
+    color: #f0a500;
+    padding: 0.4rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  .hero .cta {
+    display: inline-flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn {
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary { background: #f0a500; color: #0f1a24; }
+  .btn-primary:hover { background: #ffd166; transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: #e6edf3; border: 2px solid #9fb3c8; }
+  .btn-outline:hover { border-color: #f0a500; color: #f0a500; }
+
+  /* SECTIONS */
+  section { padding: 4rem 0; }
+  section h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #f0a500;
+  }
+  section .lead {
+    color: #9fb3c8;
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* DEMO */
+  .demo-box {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1.5rem;
+    background: #16232e;
+    border: 1px solid #2a3f4f;
+    border-radius: 20px;
+    padding: 1.5rem;
+  }
+  @media (max-width: 800px) { .demo-box { grid-template-columns: 1fr; } }
+
+  .demo-form label {
+    display: block;
+    font-size: 0.85rem;
+    color: #9fb3c8;
+    margin: 0.8rem 0 0.3rem;
+  }
+  .demo-form input, .demo-form select {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    background: #0f1a24;
+    border: 1px solid #2a3f4f;
+    border-radius: 10px;
+    color: #e6edf3;
+    font-size: 0.95rem;
+  }
+  .demo-form input:focus, .demo-form select:focus {
+    outline: none;
+    border-color: #f0a500;
+  }
+  .demo-form .btn-primary { width: 100%; margin-top: 1.2rem; }
+
+  .demo-result {
+    background: #0f1a24;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 320px;
+  }
+  .demo-result .placeholder {
+    text-align: center;
+    color: #5a7184;
+    font-style: italic;
+  }
+  .result-metric {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #2a3f4f;
+    font-size: 0.95rem;
+  }
+  .result-metric:last-of-type { border-bottom: none; }
+  .result-metric .val { font-weight: 700; color: #f0a500; }
+
+  .risk-bar {
+    height: 14px;
+    border-radius: 7px;
+    background: linear-gradient(90deg, #2ecc71 0%, #f1c40f 50%, #e74c3c 100%);
+    margin: 1.2rem 0 0.5rem;
+    position: relative;
+  }
+  .risk-marker {
+    position: absolute;
+    top: -5px;
+    width: 4px;
+    height: 24px;
+    background: #fff;
+    border-radius: 2px;
+    transition: left 0.4s ease;
+    box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  }
+  .risk-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #5a7184;
+  }
+
+  /* ARCH */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .arch-card {
+    background: #16232e;
+    border: 1px solid #2a3f4f;
+    border-radius: 16px;
+    padding: 1.3rem;
+  }
+  .arch-card .icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  .arch-card h3 { font-size: 1.05rem; margin-bottom: 0.4rem; color: #e6edf3; }
+  .arch-card p { font-size: 0.85rem; color: #9fb3c8; }
+
+  /* ECON TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #16232e;
+    border-radius: 16px;
+    overflow: hidden;
+    font-size: 0.95rem;
+  }
+  th, td {
+    padding: 0.9rem 1.2rem;
+    text-align: left;
+    border-bottom: 1px solid #2a3f4f;
+  }
+  th { background: #1a3a4a; color: #f0a500; font-weight: 700; }
+  td.good { color: #2ecc71; font-weight: 700; }
+  tr:last-child td { border-bottom: none; }
+
+  /* CODE */
+  pre {
+    background: #0a1219;
+    border: 1px solid #2a3f4f;
+    border-radius: 12px;
+    padding: 1.2rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    color: #a8d5e2;
+    margin: 1rem 0;
+  }
+  code { font-family: 'Consolas', 'Monaco', monospace; }
+
+  footer {
+    background: #0a1219;
+    padding: 2rem 0;
+    text-align: center;
+    color: #5a7184;
+    font-size: 0.85rem;
+    border-top: 1px solid #2a3f4f;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="badge">Дипломный проект · Python 3.10+</div>
+    <h1>Прогнозирование АСПО</h1>
+    <p class="subtitle">
+      Программный комплекс для оптимизации обработок скважин на основе прогнозирования
+      асфальтосмолопарафиновых отложений. Снижение затрат и простоев за счёт точной даты обработки.
+    </p>
+    <div class="cta">
+      <a href="#demo" class="btn btn-primary">Попробовать демо</a>
+      <a href="#arch" class="btn btn-outline">Архитектура</a>
+    </div>
+  </div>
+</div>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="container">
+    <h2>Демонстрация работы</h2>
+    <p class="lead">Выберите сценарий скважины — программа покажет прогноз и рекомендуемую дату обработки.</p>
+
+    <div class="demo-box">
+      <div class="demo-form">
+        <label>Сценарий скважины</label>
+        <select id="scenario">
+          <option value="0">Скважина №12 — высокий дебит, низкая обводнённость</option>
+          <option value="1">Скважина №34 — средний дебит, рост обводнённости</option>
+          <option value="2">Скважина №7 — низкий дебит, высокая температура</option>
+          <option value="3">Скважина №51 — осложнённые условия, риск АСПО</option>
+        </select>
+
+        <label>Дебит нефти, т/сут</label>
+        <input type="number" id="debit" value="45">
+
+        <label>Обводнённость, %</label>
+        <input type="number" id="water" value="18">
+
+        <label>Температура на устье, °C</label>
+        <input type="number" id="temp" value="28">
+
+        <label>Глубина скважины, м</label>
+        <input type="number" id="depth" value="1800">
+
+        <button class="btn btn-primary" id="calcBtn">Рассчитать прогноз</button>
+      </div>
+
+      <div class="demo-result" id="result">
+        <p class="placeholder">Нажмите «Рассчитать прогноз», чтобы увидеть результат</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCH -->
+<section id="arch" style="background:#0a1219;">
+  <div class="container">
+    <h2>Архитектура ПО</h2>
+    <p class="lead">Модульная структура на Python — от ввода данных до отчёта.</p>
+
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="icon">📥</div>
+        <h3>Ввод данных</h3>
+        <p>Загрузка промысловых данных из CSV/Excel, ручной ввод параметров скважины.</p>
+      </div>
+      <div class="arch-card">
+        <div class="icon">🌡️</div>
+        <h3>Расчёт температуры</h3>
+        <p>Распределение температуры по стволу скважины, определение точки начала кристаллизации парафинов.</p>
+      </div>
+      <div class="arch-card">
+        <div class="icon">📊</div>
+        <h3>Модель АСПО</h3>
+        <p>Эмпирическая зависимость толщины слоя отложений от дебита, обводнённости и температуры.</p>
+      </div>
+      <div class="arch-card">
+        <div class="icon">📈</div>
+        <h3>Визуализация</h3>
+        <p>Графики прогноза, зоны риска, сравнение сценариев обработки.</p>
+      </div>
+      <div class="arch-card">
+        <div class="icon">📄</div>
+        <h3>Отчёты</h3>
+        <p>Экспорт в Excel/PDF с рекомендациями и экономическим эффектом.</p>
+      </div>
+      <div class="arch-card">
+        <div class="icon">⚙️</div>
+        <h3>Стек</h3>
+        <p>Python 3.10+, NumPy, SciPy, Pandas, Matplotlib/Plotly, Tkinter/PyQt/Streamlit.</p>
+      </div>
+    </div>
+
+    <h2 style="margin-top:3rem;">Как запустить</h2>
+    <pre><code>git clone https://github.com/ваш-логин/apo-forecast.git
+cd apo-forecast
+pip install -r requirements.txt
+python main.py</code></pre>
+  </div>
+</section>
+
+<!-- ECON -->
+<section>
+  <div class="container">
+    <h2>Экономический эффект</h2>
+    <p class="lead">Сравнение обработок «по графику» и «по прогнозу».</p>
+
+    <table>
+      <thead>
+        <tr><th>Показатель</th><th>Было (по графику)</th><th>Стало (по прогнозу)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Частота обработок в год</td><td>12</td><td class="good">9</td></tr>
+        <tr><td>Затраты на реагенты, руб./год</td><td>1 200 000</td><td class="good">900 000</td></tr>
+        <tr><td>Простои скважин, ч/год</td><td>96</td><td class="good">72</td></tr>
+        <tr><td>Межремонтный период, дней</td><td>30</td><td class="good">40</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Дипломный проект · Прогнозирование АСПО · Python · 2026
+  </div>
+</footer>
+
+<script>
+  // Заранее рассчитанные сценарии (имитация работы Python-программы)
+  // В реальности эти цифры вы получаете из своей модели
+  const scenarios = [
+    { debit:45, water:18, temp:28, depth:1800, apoDepth:1250, days:42, risk:0.55, save:"18%" },
+    { debit:32, water:45, temp:35, depth:2100, apoDepth:980, days:28, risk:0.75, save:"12%" },
+    { debit:60, water:10, temp:42, depth:1500, apoDepth:1400, days:60, risk:0.35, save:"23%" },
+    { debit:25, water:60, temp:22, depth:2400, apoDepth:760, days:18, risk:0.90, save:"8%" }
+  ];
+
+  const scenarioSel = document.getElementById('scenario');
+  const debitInput = document.getElementById('debit');
+  const waterInput = document.getElementById('water');
+  const tempInput = document.getElementById('temp');
+  const depthInput = document.getElementById('depth');
+  const calcBtn = document.getElementById('calcBtn');
+  const result = document.getElementById('result');
+
+  // При выборе сценария — подставляем параметры
+  scenarioSel.addEventListener('change', () => {
+    const s = scenarios[scenarioSel.value];
+    debitInput.value = s.debit;
+    waterInput.value = s.water;
+    tempInput.value = s.temp;
+    depthInput.value = s.depth;
+  });
+
+  calcBtn.addEventListener('click', () => {
+    const idx = parseInt(scenarioSel.value);
+    const s = scenarios[idx];
+
+    // Небольшая "имитация" — если пользователь изменил параметры, показываем ближайший сценарий
+    // В реальном ПО здесь был бы вызов Python-модели
+
+    const riskPercent = Math.round(s.risk * 100);
+    const riskColor = s.risk < 0.4 ? '#2ecc71' : s.risk < 0.7 ? '#f1c40f' : '#e74c3c';
+    const riskText = s.risk < 0.4 ? 'Низкий' : s.risk < 0.7 ? 'Средний' : 'Высокий';
+
+    result.innerHTML = `
+      <h3 style="color:#f0a500;margin-bottom:1rem;font-size:1.2rem;">Результат прогноза</h3>
+      <div class="result-metric"><span>Глубина начала АСПО</span><span class="val">${s.apoDepth} м</span></div>
+      <div class="result-metric"><span>Рекомендуемая обработка</span><span class="val">через ${s.days} дней</span></div>
+      <div class="result-metric"><span>Уровень риска</span><span class="val" style="color:${riskColor}">${riskText} (${riskPercent}%)</span></div>
+      <div class="result-metric"><span>Экономия реагентов</span><span class="val">${s.save}</span></div>
+
+      <div class="risk-bar">
+        <div class="risk-marker" style="left: ${riskPercent}%;"></div>
+      </div>
+      <div class="risk-labels">
+        <span>Низкий</span><span>Средний</span><span>Высокий</span>
+      </div>
+
+      <p style="margin-top:1.2rem;font-size:0.8rem;color:#5a7184;font-style:italic;">
+        Прогноз рассчитан моделью на основе температуры потока и эмпирической зависимости АСПО.
+      </p>
+    `;
+  });
+
+  // Инициализация
+  scenarioSel.dispatchEvent(new Event('change'));
+</script>
+
+</body>
+</html>
