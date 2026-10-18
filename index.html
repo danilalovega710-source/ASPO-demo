@@ -194,7 +194,7 @@
       <div class="control-panel">
         <h3 style="color: #fff; margin-bottom: 10px; font-size: 1.1rem;">Базовые условия</h3>
 
-        <div style="margin-bottom: 18px;">
+        <div style="margin-bottom: 15px;">
           <label style="display:flex; justify-content:space-between; font-size:13px; color:#94a3b8; margin-bottom:6px;">
             <span>Содержание парафина</span><b id="val-paraffin" style="color:#00f2fe;">9.2 %</b>
           </label>
@@ -202,15 +202,23 @@
                  style="width:100%; accent-color:#3b82f6;">
         </div>
 
-        <div style="margin-bottom: 18px;">
+        <div style="margin-bottom: 15px;">
           <label style="display:flex; justify-content:space-between; font-size:13px; color:#94a3b8; margin-bottom:6px;">
-            <span>Температура нефти (устье)</span><b id="val-temp" style="color:#00f2fe;">30 °C</b>
+            <span>Температура на устье (0 м)</span><b id="val-temp" style="color:#00f2fe;">10 °C</b>
           </label>
-          <input type="range" id="in-temp" min="10" max="90" step="1" value="30"
+          <input type="range" id="in-temp" min="5" max="50" step="1" value="10"
                  style="width:100%; accent-color:#3b82f6;">
         </div>
 
-        <div style="margin-bottom: 18px;">
+        <div style="margin-bottom: 15px;">
+          <label style="display:flex; justify-content:space-between; font-size:13px; color:#94a3b8; margin-bottom:6px;">
+            <span>Температура на забое (2400 м)</span><b id="val-tform" style="color:#00f2fe;">85 °C</b>
+          </label>
+          <input type="range" id="in-tform" min="60" max="120" step="1" value="85"
+                 style="width:100%; accent-color:#3b82f6;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
           <label style="display:flex; justify-content:space-between; font-size:13px; color:#94a3b8; margin-bottom:6px;">
             <span>Дебит скважины</span><b id="val-debit" style="color:#00f2fe;">45 т/сут</b>
           </label>
@@ -218,7 +226,7 @@
                  style="width:100%; accent-color:#3b82f6;">
         </div>
 
-        <div style="padding:16px; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1);">
+        <div style="padding:16px; background:rgba(255,255,255,0.05); border-radius:12px; border:1px solid rgba(255,255,255,0.1); margin-top: 10px;">
           <p style="font-size:13px; color:#94a3b8; margin-bottom:8px;">Расчётные показатели:</p>
           <ul style="font-size:13px; color:#e2e8f0; list-style:none; padding:0;">
             <li style="margin-bottom:5px;">МРП: <b id="out-mrp" style="color:#00f2fe;">—</b> дней</li>
@@ -253,7 +261,7 @@
           <div class="chart-header" style="color: #64748b; margin-bottom: 10px; padding: 0 10px;">
             <span>Глубина выпадения АСПО (Температурный профиль)</span>
           </div>
-          <!-- Картинка лежит в корне репозитория вместе с index.html -->
+          <!-- Убедитесь, что картинка называется wat-profile.png и лежит рядом с index.html -->
           <img src="wat-profile.png" alt="Температурный профиль и глубина выпадения АСПО" style="width: 100%; height: auto; border-radius: 8px; display: block;">
         </div>
       </div>
@@ -526,8 +534,11 @@
 </footer>
 
 <script>
-  // ===== УПРОЩЁННАЯ МОДЕЛЬ =====
-  function calcWAT(paraffin) { return 25 + 1.6 * paraffin; } 
+  // ===== МОДЕЛЬ, СИНХРОНИЗИРОВАННАЯ С ГРАФИКОМ =====
+  const H = 2400; // Глубина скважины, м
+  
+  // Формула подобрана так, чтобы при парафине 9.2% выдавать WAT = 40°C (как на графике)
+  function calcWAT(paraffin) { return 40 + (paraffin - 9.2) * 1.5; } 
   
   function calcMRP(T, P, Q) {
     const base = 60;
@@ -537,12 +548,14 @@
     return Math.max(1, base * fT * fP * fQ);
   }
 
-  function calcDepth(Twellhead, WAT) {
-    const H = 2400;
-    const T_FORM = 85;
-    if (WAT >= T_FORM) return 0;
-    if (WAT <= Twellhead) return H;
-    return H * (T_FORM - WAT) / (T_FORM - Twellhead);
+  // Расчет глубины пересечения (линейный профиль)
+  function calcDepth(Twellhead, Tform, WAT) {
+    if (WAT >= Tform) return 0; // Если WAT выше забойной температуры, выпадает сразу на забое
+    if (WAT <= Twellhead) return H; // Если WAT ниже устьевой, не выпадает вообще
+    // Линейная интерполяция: 
+    // T(h) = Tform - (Tform - Twellhead) * (h / H)
+    // h = H * (Tform - WAT) / (Tform - Twellhead)
+    return H * (Tform - WAT) / (Tform - Twellhead);
   }
 
   // ===== ОТРИСОВКА Графика 1 (МРП) =====
@@ -576,16 +589,18 @@
   // ===== ОБРАБОТКА ВВОДА =====
   function update() {
     const P = parseFloat(document.getElementById('in-paraffin').value);
-    const T = parseFloat(document.getElementById('in-temp').value);
+    const Twell = parseFloat(document.getElementById('in-temp').value);
+    const Tform = parseFloat(document.getElementById('in-tform').value);
     const Q = parseFloat(document.getElementById('in-debit').value);
 
     document.getElementById('val-paraffin').innerText = P.toFixed(1) + ' %';
-    document.getElementById('val-temp').innerText = T.toFixed(0) + ' °C';
+    document.getElementById('val-temp').innerText = Twell.toFixed(0) + ' °C';
+    document.getElementById('val-tform').innerText = Tform.toFixed(0) + ' °C';
     document.getElementById('val-debit').innerText = Q.toFixed(0) + ' т/сут';
 
     const WAT = calcWAT(P);
-    const mrp = drawMRP(T, P, Q);
-    const depth = calcDepth(T, WAT);
+    const mrp = drawMRP(Twell, P, Q);
+    const depth = calcDepth(Twell, Tform, WAT);
 
     document.getElementById('out-mrp').innerText = mrp.toFixed(0);
     document.getElementById('out-wat').innerText = WAT.toFixed(1);
@@ -593,7 +608,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    ['in-paraffin','in-temp','in-debit'].forEach(id => {
+    ['in-paraffin','in-temp','in-tform','in-debit'].forEach(id => {
       document.getElementById(id).addEventListener('input', update);
     });
     update();
