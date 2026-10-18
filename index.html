@@ -222,8 +222,8 @@
           <p style="font-size:13px; color:#94a3b8; margin-bottom:8px;">Расчётные показатели:</p>
           <ul style="font-size:13px; color:#e2e8f0; list-style:none; padding:0;">
             <li style="margin-bottom:5px;">МРП: <b id="out-mrp" style="color:#00f2fe;">—</b> дней</li>
-            <li style="margin-bottom:5px;">WAT: <b id="out-wat" style="color:#00f2fe;">—</b> °C</li>
-            <li>Глубина выпадения АСПО: <b id="out-depth" style="color:#00f2fe;">—</b> м</li>
+            <li style="margin-bottom:5px;">WAT (Тнп): <b id="out-wat" style="color:#00f2fe;">—</b> °C</li>
+            <li>Глубина начала АСПО: <b id="out-depth" style="color:#00f2fe;">—</b> м</li>
           </ul>
         </div>
       </div>
@@ -242,34 +242,73 @@
             <text x="50" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">1%</text>
             <text x="315" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">15%</text>
             <text x="580" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">30%</text>
+            <text x="25" y="135" fill="#94a3b8" font-size="11" text-anchor="middle" transform="rotate(-90 25 135)">Дней</text>
             <path id="path-mrp" d="" fill="none" stroke="#00f2fe" stroke-width="3"/>
             <circle id="dot-mrp" r="6" fill="#fff" stroke="#00f2fe" stroke-width="3"/>
           </svg>
         </div>
 
-        <!-- График 2: профиль температуры и WAT -->
+        <!-- График 2: Профиль температуры и WAT (как на скриншоте) -->
         <div class="chart-box">
           <div class="chart-header">
-            <span>Профиль температуры по стволу и точка WAT</span>
-            <span>T (°C)</span>
+            <span>Глубина выпадения АСПО (Температурный профиль)</span>
+            <span>Температура, °C</span>
           </div>
-          <svg id="chart-temp" viewBox="0 0 600 280" style="width:100%; height:auto;">
-            <line x1="50" y1="240" x2="580" y2="240" stroke="#1e3a8a" stroke-width="2"/>
-            <line x1="50" y1="20" x2="50" y2="240" stroke="#1e3a8a" stroke-width="2"/>
-            <text x="50" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">0 м</text>
-            <text x="315" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">1000 м</text>
-            <text x="580" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">2000 м</text>
-            <text x="30" y="30" fill="#94a3b8" font-size="11" text-anchor="middle">90°C</text>
-            <text x="30" y="240" fill="#94a3b8" font-size="11" text-anchor="middle">-20°C</text>
+          <svg id="chart-temp" viewBox="0 0 600 350" style="width:100%; height:auto;">
+            <defs>
+              <clipPath id="plot-area">
+                <rect x="60" y="20" width="510" height="270" />
+              </clipPath>
+            </defs>
 
-            <path id="path-temp" d="" fill="none" stroke="#60a5fa" stroke-width="3"/>
-            <line id="line-wat" x1="50" y1="0" x2="580" y2="0" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,4"/>
-            <text id="label-wat" x="585" y="0" fill="#f59e0b" font-size="11" text-anchor="start">WAT</text>
-            <circle id="dot-wat" r="6" fill="#f59e0b"/>
+            <!-- Оси -->
+            <line x1="60" y1="290" x2="570" y2="290" stroke="#475569" stroke-width="2"/>
+            <line x1="60" y1="20" x2="60" y2="290" stroke="#475569" stroke-width="2"/>
+            
+            <!-- Подписи осей -->
+            <text x="60" y="310" fill="#94a3b8" font-size="11" text-anchor="middle">0</text>
+            <text x="315" y="310" fill="#94a3b8" font-size="11" text-anchor="middle">50</text>
+            <text x="570" y="310" fill="#94a3b8" font-size="11" text-anchor="middle">100</text>
+            <text x="40" y="20" fill="#94a3b8" font-size="11" text-anchor="middle">0</text>
+            <text x="40" y="155" fill="#94a3b8" font-size="11" text-anchor="middle">1200</text>
+            <text x="40" y="290" fill="#94a3b8" font-size="11" text-anchor="middle">2400</text>
+            
+            <text x="30" y="155" fill="#94a3b8" font-size="11" text-anchor="middle" transform="rotate(-90 30 155)">Глубина, м</text>
+            <text x="315" y="330" fill="#94a3b8" font-size="11" text-anchor="middle">Температура, °C</text>
+
+            <!-- Зоны (клиппинг по области графика) -->
+            <g clip-path="url(#plot-area)">
+              <!-- Зеленая зона (ниже WAT) -->
+              <rect id="zone-green" x="60" y="20" width="510" height="270" fill="#e8f5e9" opacity="0.85"/>
+              <!-- Розовая зона (выше WAT) -->
+              <rect id="zone-red" x="60" y="20" width="510" height="270" fill="#ffebee" opacity="0.85"/>
+            </g>
+
+            <!-- Линии сетки -->
+            <line x1="60" y1="155" x2="570" y2="155" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="315" y1="20" x2="315" y2="290" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <!-- Вертикальная линия WAT -->
+            <line id="line-wat" x1="0" y1="20" x2="0" y2="290" stroke="#f59e0b" stroke-width="2.5"/>
+            
+            <!-- Текст зон -->
+            <text id="text-zone-red" x="300" y="60" fill="#b91c1c" font-size="12" font-weight="bold" text-anchor="middle" opacity="0.8">Зона интенсивного отложения АСПО</text>
+            <text id="text-zone-green" x="300" y="220" fill="#15803d" font-size="12" font-weight="bold" text-anchor="middle" opacity="0.8">Условия для кристаллизации отсутствуют (T &gt; Тнп)</text>
+
+            <!-- Кривая температуры -->
+            <path id="path-temp" d="" fill="none" stroke="#2563eb" stroke-width="3"/>
+            
+            <!-- Точка начала кристаллизации -->
+            <circle id="dot-wat" r="5" fill="#000" stroke="#fff" stroke-width="1.5"/>
+            <text id="label-wat-point" x="0" y="0" fill="#000" font-size="11" font-weight="bold"></text>
+            
+            <!-- Легенда -->
+            <line x1="350" y1="260" x2="380" y2="260" stroke="#2563eb" stroke-width="3"/>
+            <text x="390" y="264" fill="#475569" font-size="11">Температура нефти в скважине</text>
+            
+            <line x1="350" y1="280" x2="380" y2="280" stroke="#f59e0b" stroke-width="2.5"/>
+            <text x="390" y="284" fill="#475569" font-size="11">Температура насыщения парафином (Тнп)</text>
           </svg>
-          <p style="font-size:12px; color:#94a3b8; margin-top:8px;">
-            Пересечение синей кривой (T по стволу) и оранжевой линии (WAT) — глубина, ниже которой начинается выпадение парафинов.
-          </p>
         </div>
 
         <!-- Краткая интерпретация -->
@@ -547,37 +586,33 @@
 
 <script>
   // ===== УПРОЩЁННАЯ МОДЕЛЬ (для демо) =====
-  // В реальной программе коэффициенты калибруются по промысловым данным.
-  const H = 2000;         // глубина ствола, м
+  const H = 2400;         // глубина ствола, м (по скриншоту)
   const T_RES = -20;      // температура среды, °C
   const T_FORM = 85;      // температура на забое, °C
 
   function calcWAT(paraffin) { return 20 + 1.2 * paraffin; }               // °C
   function calcMRP(T, P, Q) {
     const base = 60;
-    const fT = T / 30;                          // влияние температуры
-    const fP = 1 / (1 + 0.08 * (P - 9.2));      // влияние парафина
-    const fQ = 1 + 0.004 * (Q - 45);            // влияние дебита
+    const fT = T / 30;                          
+    const fP = 1 / (1 + 0.08 * (P - 9.2));      
+    const fQ = 1 + 0.004 * (Q - 45);            
     return Math.max(1, base * fT * fP * fQ);
   }
-  // Линейный профиль температуры: от T_FORM на забое (h=0) до Twellhead на устье (h=H)
+  // Линейный профиль температуры
   function tempProfileLinear(h, Twellhead) {
     return T_FORM - (T_FORM - Twellhead) * (h / H);
   }
   function depthOfWAT(Twellhead, WAT) {
-    // T_FORM - (T_FORM - Twellhead)*(h/H) = WAT  =>  h = H*(T_FORM - WAT)/(T_FORM - Twellhead)
     if (WAT >= T_FORM) return 0;
     if (WAT <= Twellhead) return H;
     return H * (T_FORM - WAT) / (T_FORM - Twellhead);
   }
 
   // ===== ОТРИСОВКА =====
-  const X0 = 50, X1 = 580, Y0 = 20, Y1 = 240;
-  function mapX(h) { return X0 + (h / H) * (X1 - X0); }
-  function mapY_T(T, Tmin, Tmax) { return Y1 - ((T - Tmin) / (Tmax - Tmin)) * (Y1 - Y0); }
-
+  // График 1 (МРП)
+  const X0_mrp = 50, X1_mrp = 580, Y0_mrp = 20, Y1_mrp = 240;
+  
   function drawMRP(T, P, Q) {
-    // строим кривую МРП по парафину от 1 до 30
     const pts = [];
     for (let p = 1; p <= 30; p += 0.5) {
       const mrp = calcMRP(T, p, Q);
@@ -587,46 +622,99 @@
     const minMRP = Math.min(...pts.map(o => o.mrp));
     const span = Math.max(1, maxMRP - minMRP);
     const d = pts.map((o, i) => {
-      const x = X0 + ((o.p - 1) / 29) * (X1 - X0);
-      const y = Y1 - ((o.mrp - minMRP) / span) * (Y1 - Y0);
+      const x = X0_mrp + ((o.p - 1) / 29) * (X1_mrp - X0_mrp);
+      const y = Y1_mrp - ((o.mrp - minMRP) / span) * (Y1_mrp - Y0_mrp);
       return (i === 0 ? 'M' : 'L') + ` ${x.toFixed(1)} ${y.toFixed(1)}`;
     }).join(' ');
     document.getElementById('path-mrp').setAttribute('d', d);
 
-    // точка текущего P
     const curMrp = calcMRP(T, P, Q);
-    const cx = X0 + ((P - 1) / 29) * (X1 - X0);
-    const cy = Y1 - ((curMrp - minMRP) / span) * (Y1 - Y0);
+    const cx = X0_mrp + ((P - 1) / 29) * (X1_mrp - X0_mrp);
+    const cy = Y1_mrp - ((curMrp - minMRP) / span) * (Y1_mrp - Y0_mrp);
     const dot = document.getElementById('dot-mrp');
     dot.setAttribute('cx', cx);
     dot.setAttribute('cy', cy);
     return curMrp;
   }
 
+  // График 2 (Профиль температуры)
+  const X0_temp = 60, X1_temp = 570; // по оси X: 0 - 100 °C
+  const Y0_temp = 20, Y1_temp = 290; // по оси Y: 0 - 2400 м (сверху вниз)
+  
   function drawTemp(Twellhead, WAT) {
-    const Tmin = T_RES, Tmax = T_FORM;
+    const Tmin = 0, Tmax = 100;
+    
+    function mapX_T(t) { return X0_temp + (t - Tmin) / (Tmax - Tmin) * (X1_temp - X0_temp); }
+    function mapY_H(h) { return Y0_temp + (h / H) * (Y1_temp - Y0_temp); } // 0м сверху, H снизу
+
+    // 1. Рисуем кривую температуры
     const pts = [];
     for (let h = 0; h <= H; h += 50) {
       pts.push({ h, T: tempProfileLinear(h, Twellhead) });
     }
     const d = pts.map((o, i) => {
-      const x = mapX(o.h);
-      const y = mapY_T(o.T, Tmin, Tmax);
+      const x = mapX_T(o.T);
+      const y = mapY_H(o.h);
       return (i === 0 ? 'M' : 'L') + ` ${x.toFixed(1)} ${y.toFixed(1)}`;
     }).join(' ');
     document.getElementById('path-temp').setAttribute('d', d);
 
-    // линия WAT
-    const yWAT = mapY_T(WAT, Tmin, Tmax);
-    document.getElementById('line-wat').setAttribute('y1', yWAT);
-    document.getElementById('line-wat').setAttribute('y2', yWAT);
-    document.getElementById('label-wat').setAttribute('y', yWAT - 4);
+    // 2. Позиционируем вертикальную линию WAT
+    const xWAT = mapX_T(WAT);
+    document.getElementById('line-wat').setAttribute('x1', xWAT);
+    document.getElementById('line-wat').setAttribute('x2', xWAT);
 
-    // точка пересечения
+    // 3. Находим глубину начала АСПО и ставим точку
     const depth = depthOfWAT(Twellhead, WAT);
+    const yDepth = mapY_H(depth);
+    
     const dot = document.getElementById('dot-wat');
-    dot.setAttribute('cx', mapX(depth));
-    dot.setAttribute('cy', yWAT);
+    dot.setAttribute('cx', xWAT);
+    dot.setAttribute('cy', yDepth);
+
+    // Подпись к точке
+    const label = document.getElementById('label-wat-point');
+    label.setAttribute('x', xWAT + 10);
+    label.setAttribute('y', yDepth - 5);
+    if (depth > 0 && depth < H) {
+       label.textContent = `Точка начала кристаллизации (глубина ≈ ${depth.toFixed(0)} м)`;
+       label.style.display = 'block';
+    } else {
+       label.style.display = 'none';
+    }
+
+    // 4. Закрашиваем зоны
+    // Красная зона (сверху, от 0 до WAT). Если WAT < 0, красной зоны нет.
+    // Зеленая зона (снизу, от WAT до 100).
+    const zoneRed = document.getElementById('zone-red');
+    const zoneGreen = document.getElementById('zone-green');
+    
+    // Координаты пересечения линии WAT с верхней/нижней границей графика
+    const wTop = mapY_H(0);
+    const wBottom = mapY_H(H);
+    
+    // Ограничиваем xWAT рамками графика (для отрисовки зон)
+    const safeXWAT = Math.max(X0_temp, Math.min(X1_temp, xWAT));
+
+    // Розовая зона (Температура ВЫШЕ WAT -> x от safeXWAT до X1_temp)
+    zoneRed.setAttribute('x', safeXWAT);
+    zoneRed.setAttribute('y', wTop);
+    zoneRed.setAttribute('width', Math.max(0, X1_temp - safeXWAT));
+    zoneRed.setAttribute('height', wBottom - wTop);
+
+    // Зеленая зона (Температура НИЖЕ WAT -> x от X0_temp до safeXWAT)
+    zoneGreen.setAttribute('x', X0_temp);
+    zoneGreen.setAttribute('y', wTop);
+    zoneGreen.setAttribute('width', Math.max(0, safeXWAT - X0_temp));
+    zoneGreen.setAttribute('height', wBottom - wTop);
+
+    // Текст в зонах
+    document.getElementById('text-zone-red').style.display = (safeXWAT < X1_temp) ? 'block' : 'none';
+    document.getElementById('text-zone-red').setAttribute('x', (safeXWAT + X1_temp) / 2);
+    
+    document.getElementById('text-zone-green').style.display = (safeXWAT > X0_temp) ? 'block' : 'none';
+    document.getElementById('text-zone-green').setAttribute('x', (X0_temp + safeXWAT) / 2);
+
     return depth;
   }
 
@@ -648,11 +736,14 @@
     document.getElementById('out-wat').innerText = WAT.toFixed(1);
     document.getElementById('out-depth').innerText = depth.toFixed(0);
 
-    const depthNote = depth < H
+    const depthNote = (depth > 0 && depth < H)
       ? `Выпадение парафинов начинается с глубины ≈ ${depth.toFixed(0)} м и продолжается до устья.`
-      : `При данных условиях температура по всему стволу выше WAT — выпадение парафинов маловероятно.`;
+      : (depth <= 0 
+          ? `Температура на забое ниже WAT — выпадение начинается уже на забое.`
+          : `Температура по всему стволу выше WAT — выпадение парафинов маловероятно.`);
+          
     document.getElementById('interpretation').innerText =
-      `При содержании парафина ${P.toFixed(1)}%, температуре нефти ${T}°C и дебите ${Q} т/сут ` +
+      `При содержании парафина ${P.toFixed(1)}%, температуре нефти (устье) ${T}°C и дебите ${Q} т/сут ` +
       `прогнозируемый МРП составляет ≈ ${mrp.toFixed(0)} дней. ${depthNote}`;
   }
 
