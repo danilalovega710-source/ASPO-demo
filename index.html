@@ -29,7 +29,7 @@
   body { background: var(--bg-light); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
   a { text-decoration: none; color: inherit; }
   
-  /* АНИМАЦИЯ ПРИ СКРОЛЛЕ (Пункт 7) */
+  /* АНИМАЦИЯ ПРИ СКРОЛЛЕ */
   .fade-in-up {
     opacity: 0;
     transform: translateY(30px);
@@ -96,12 +96,6 @@
     display: inline-block; transition: 0.3s; border: none; cursor: pointer;
   }
   .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 242, 254, 0.5); }
-  
-  .btn-secondary {
-    background: transparent; color: #fff; padding: 16px 40px; border-radius: 8px; font-size: 16px; font-weight: 600;
-    border: 2px solid rgba(255,255,255,0.2); transition: 0.3s; display: inline-block; cursor: pointer;
-  }
-  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,242,254,0.05); }
 
   /* СЕКЦИИ */
   .section-light { padding: 80px 20px; background: var(--bg-light); }
@@ -116,11 +110,24 @@
   .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 10px; }
   .stat-label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
 
-  /* ДАШБОРД */
-  .dashboard { display: grid; grid-template-columns: 1fr; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-  .charts-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .chart-box { background: #0a192f; border-radius: 16px; padding: 20px; position: relative; display: flex; flex-direction: column; }
-  .chart-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; color: var(--text-muted); }
+  /* ДАШБОРД (Результаты моделирования) */
+  .dashboard { display: flex; flex-direction: column; align-items: center; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 40px 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  
+  /* Контейнер для картинки */
+  .chart-image-container { 
+    width: 100%; 
+    max-width: 700px; 
+    background: #fff; 
+    padding: 15px; 
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .chart-image-container img { 
+    width: 100%; 
+    height: auto; 
+    display: block; 
+    border-radius: 8px; 
+  }
 
   /* МЕТОДОЛОГИЯ */
   .methodology-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; }
@@ -166,13 +173,6 @@
   .terminal-screenshot .success { color: #4ade80; }
   .terminal-screenshot .warn { color: #fbbf24; }
 
-  /* АВТОР */
-  .author-block { display: flex; align-items: center; gap: 30px; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto; }
-  .author-photo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; background: #cbd5e1; border: 4px solid #e2e8f0; flex-shrink: 0; }
-  .author-info h3 { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 5px; }
-  .author-info p { color: #64748b; font-size: 0.95rem; }
-  @media (max-width: 600px) { .author-block { flex-direction: column; text-align: center; } }
-
   /* КОНТАКТЫ */
   .contact-form { max-width: 400px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
   .contact-form input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; }
@@ -184,7 +184,6 @@
     .nav-links { display: none; } 
     .hero h1 { font-size: 2.2rem; } 
     .hero-buttons { flex-direction: column; }
-    .charts-area { grid-template-columns: 1fr; }
     .methodology-grid { grid-template-columns: 1fr; }
   }
 </style>
@@ -219,7 +218,6 @@
     <p>Программный комплекс на Python для прогнозирования асфальтосмолопарафиновых отложений (АСПО), автоматического выбора методов очистки и расчета экономической эффективности.</p>
     <div class="hero-buttons">
       <a href="#demo" class="btn-main">Перейти к анализу</a>
-      <a href="https://github.com/danilalovega710-source/ASPO-demo" target="_blank" class="btn-secondary">Исходный код</a>
     </div>
   </div>
 </section>
@@ -251,14 +249,15 @@
   </div>
 </section>
 
-<!-- СТАТИЧНЫЙ АНАЛИЗ ЧУВСТВИТЕЛЬНОСТИ -->
+<!-- РЕЗУЛЬТАТЫ МОДЕЛИРОВАНИЯ -->
 <section id="demo" class="section-dark">
   <div class="container">
-    <h2 class="section-title fade-in-up" style="color: #fff;">Анализ чувствительности модели</h2>
-    <p class="section-subtitle fade-in-up">Исследуйте, как ключевые параметры скважины влияют на межремонтный период (МРП) и глубину выпадения АСПО.</p>
+    <h2 class="section-title fade-in-up" style="color: #fff;">Результаты моделирования</h2>
+    <p class="section-subtitle fade-in-up">Пример прогноза распределения температуры по стволу скважины и определение глубины начала отложения АСПО.</p>
 
     <div class="dashboard fade-in-up">
-      <div class="stats-grid" style="margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+      <!-- Верхний ряд: Три карточки с выводами -->
+      <div class="stats-grid" style="margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); width: 100%;">
         <div class="stat-item" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
           <div class="stat-number" style="color: #00f2fe; font-size: 2.2rem;">40 °C</div>
           <div class="stat-label" style="color: #e2e8f0;">Температура насыщения (WAT) при 9.2% парафина</div>
@@ -273,35 +272,12 @@
         </div>
       </div>
 
-      <div class="charts-area">
-        <div class="chart-box">
-          <div class="chart-header">
-            <span>Влияние содержания парафина на МРП</span>
-            <span>МРП (дней)</span>
-          </div>
-          <svg viewBox="0 0 600 280" style="width:100%; height:auto;">
-            <line x1="50" y1="240" x2="580" y2="240" stroke="#1e3a8a" stroke-width="2"/>
-            <line x1="50" y1="20" x2="50" y2="240" stroke="#1e3a8a" stroke-width="2"/>
-            <line x1="50" y1="185" x2="580" y2="185" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="50" y1="130" x2="580" y2="130" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="50" y1="75" x2="580" y2="75" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <text x="50" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">1%</text>
-            <text x="315" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">15%</text>
-            <text x="580" y="260" fill="#94a3b8" font-size="11" text-anchor="middle">30%</text>
-            <text x="25" y="75" fill="#94a3b8" font-size="11" text-anchor="middle">100</text>
-            <text x="25" y="185" fill="#94a3b8" font-size="11" text-anchor="middle">50</text>
-            <path d="M 50 40 Q 315 180 580 235" fill="none" stroke="#00f2fe" stroke-width="3"/>
-            <circle cx="210" cy="130" r="6" fill="#fff" stroke="#00f2fe" stroke-width="3"/>
-            <text x="220" y="125" fill="#fff" font-size="11">9.2%</text>
-          </svg>
+      <!-- Картинка по центру -->
+      <div class="chart-image-container">
+        <div class="chart-header" style="color: #64748b; margin-bottom: 10px; font-weight: 600; text-align: center;">
+          <span>Глубина выпадения АСПО (Температурный профиль)</span>
         </div>
-
-        <div class="chart-box" style="padding: 10px; background: #fff;">
-          <div class="chart-header" style="color: #64748b; margin-bottom: 10px; padding: 0 10px;">
-            <span>Глубина выпадения АСПО (Температурный профиль)</span>
-          </div>
-          <img src="wat-profile.png" alt="Температурный профиль" style="width: 100%; height: auto; border-radius: 8px; display: block;">
-        </div>
+        <img src="wat-profile.png" alt="Температурный профиль и глубина выпадения АСПО">
       </div>
     </div>
   </div>
@@ -431,7 +407,7 @@
   </div>
 </section>
 
-<!-- РУКОВОДСТВО (С ДОБАВЛЕННЫМИ СКРИНШОТАМИ) -->
+<!-- РУКОВОДСТВО -->
 <section id="docs" class="section-light" style="padding-bottom: 80px;">
   <div class="container">
     <h2 class="section-title fade-in-up">Руководство пользователя</h2>
@@ -449,7 +425,6 @@
           <p style="margin-bottom: 10px;">Откройте терминал (командную строку) в папке с проектом и выполните команду:</p>
           <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; font-family: monospace; color: #0f172a; margin-bottom: 15px;">pip install -r requirements.txt</div>
           
-          <!-- СКРИНШОТ 1 -->
           <div class="terminal-screenshot">
             <span>C:\Users\Student\ASPO-demo></span> pip install -r requirements.txt<br>
             Collecting pandas...<br>
@@ -471,7 +446,6 @@
         <div class="details-content">
           <p style="margin-bottom: 10px;">В главном меню выберите пункт <b>«1. Добавить новую скважину»</b>. Программа попросит ввести имя скважины и её физические параметры.</p>
           
-          <!-- СКРИНШОТ 2 -->
           <div class="terminal-screenshot">
             <span>=== АСПО.НЕТ ===</span><br>
             1. Добавить новую скважину<br>
@@ -497,7 +471,6 @@
         <div class="details-content">
           <p style="margin-bottom: 10px;">Выберите в меню <b>«5. Запустить симуляцию»</b>. Программа смоделирует работу скважины на заданный период (по умолчанию — 365 дней).</p>
           
-          <!-- СКРИНШОТ 3 -->
           <div class="terminal-screenshot">
             <span class="warn">Выберите действие: 5</span><br><br>
             <span>Запуск симуляции для Well-101 на 365 дней...</span><br>
@@ -564,28 +537,13 @@
   </div>
 </section>
 
-<!-- АВТОР -->
-<section class="section-light" style="background: #f1f5f9; padding-top: 40px; padding-bottom: 40px;">
-  <div class="container">
-    <div class="author-block fade-in-up">
-      <!-- Замените на свою фотографию или аватарку -->
-      <div class="author-photo" style="display: flex; align-items: center; justify-content: center; font-size: 40px; background: #e2e8f0;">👨‍💻</div>
-      <div class="author-info">
-        <h3>Данила Ловега</h3>
-        <p>Разработчик программного комплекса АСПО.НЕТ. Студент/Инженер. Специализируюсь на Python, анализе данных и моделировании физических процессов в нефтегазовой отрасли.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- КОНТАКТЫ -->
-<section id="contacts" class="section-light">
+<section id="contacts" class="section-light" style="background: #f1f5f9;">
   <div class="container" style="text-align: center;">
     <h2 class="section-title fade-in-up">Оставить заявку</h2>
     <p class="section-subtitle fade-in-up">Оставьте свои контакты для получения демо-доступа или консультации по внедрению.</p>
     
     <div class="contact-form fade-in-up">
-      <!-- ВАЖНО: Чтобы форма работала, зарегистрируйтесь на formspree.io и замените 'ВАШ_ID' на ваш ID -->
       <form action="https://formspree.io/f/ВАШ_ID" method="POST">
         <input type="text" name="name" placeholder="Ваше имя" required>
         <input type="email" name="email" placeholder="E-mail или телефон" required>
@@ -600,14 +558,13 @@
   <p>© АСПО.НЕТ, 2026. Все права защищены.</p>
 </footer>
 
-<!-- СКРИПТ АНИМАЦИИ ПРИ СКРОЛЛЕ -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target); // Анимируем только один раз
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.1 });
