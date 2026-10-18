@@ -82,7 +82,7 @@
   .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 10px; }
   .stat-label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
 
-  /* ДАШБОРД (Интерактивная модель) */
+  /* ДАШБОРД */
   .dashboard { display: grid; grid-template-columns: 320px 1fr; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
   @media (max-width: 900px) { .dashboard { grid-template-columns: 1fr !important; } }
   
@@ -109,7 +109,7 @@
   .module-card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 10px; }
   .module-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
 
-  /* ДОКУМЕНТАЦИЯ (АККОРДЕОН) */
+  /* ДОКУМЕНТАЦИЯ */
   .docs-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
   details { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
   summary { padding: 20px; font-size: 1.1rem; font-weight: 600; color: var(--text-dark); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
@@ -248,67 +248,13 @@
           </svg>
         </div>
 
-        <!-- График 2: Профиль температуры и WAT (как на скриншоте) -->
-        <div class="chart-box">
-          <div class="chart-header">
+        <!-- График 2: КАРТИНКА (Температурный профиль) -->
+        <div class="chart-box" style="padding: 10px; background: #fff;">
+          <div class="chart-header" style="color: #64748b; margin-bottom: 10px; padding: 0 10px;">
             <span>Глубина выпадения АСПО (Температурный профиль)</span>
-            <span>Температура, °C</span>
           </div>
-          <svg id="chart-temp" viewBox="0 0 600 350" style="width:100%; height:auto;">
-            <defs>
-              <clipPath id="plot-area">
-                <rect x="60" y="20" width="510" height="270" />
-              </clipPath>
-            </defs>
-
-            <!-- Оси -->
-            <line x1="60" y1="290" x2="570" y2="290" stroke="#475569" stroke-width="2"/>
-            <line x1="60" y1="20" x2="60" y2="290" stroke="#475569" stroke-width="2"/>
-            
-            <!-- Подписи осей -->
-            <text x="60" y="310" fill="#94a3b8" font-size="11" text-anchor="middle">0</text>
-            <text x="315" y="310" fill="#94a3b8" font-size="11" text-anchor="middle">50</text>
-            <text x="570" y="310" fill="#94a3b8" font-size="11" text-anchor="middle">100</text>
-            <text x="40" y="20" fill="#94a3b8" font-size="11" text-anchor="middle">0</text>
-            <text x="40" y="155" fill="#94a3b8" font-size="11" text-anchor="middle">1200</text>
-            <text x="40" y="290" fill="#94a3b8" font-size="11" text-anchor="middle">2400</text>
-            
-            <text x="30" y="155" fill="#94a3b8" font-size="11" text-anchor="middle" transform="rotate(-90 30 155)">Глубина, м</text>
-            <text x="315" y="330" fill="#94a3b8" font-size="11" text-anchor="middle">Температура, °C</text>
-
-            <!-- Зоны (клиппинг по области графика) -->
-            <g clip-path="url(#plot-area)">
-              <!-- Зеленая зона (ниже WAT) -->
-              <rect id="zone-green" x="60" y="20" width="510" height="270" fill="#e8f5e9" opacity="0.85"/>
-              <!-- Розовая зона (выше WAT) -->
-              <rect id="zone-red" x="60" y="20" width="510" height="270" fill="#ffebee" opacity="0.85"/>
-            </g>
-
-            <!-- Линии сетки -->
-            <line x1="60" y1="155" x2="570" y2="155" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="315" y1="20" x2="315" y2="290" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
-
-            <!-- Вертикальная линия WAT -->
-            <line id="line-wat" x1="0" y1="20" x2="0" y2="290" stroke="#f59e0b" stroke-width="2.5"/>
-            
-            <!-- Текст зон -->
-            <text id="text-zone-red" x="300" y="60" fill="#b91c1c" font-size="12" font-weight="bold" text-anchor="middle" opacity="0.8">Зона интенсивного отложения АСПО</text>
-            <text id="text-zone-green" x="300" y="220" fill="#15803d" font-size="12" font-weight="bold" text-anchor="middle" opacity="0.8">Условия для кристаллизации отсутствуют (T &gt; Тнп)</text>
-
-            <!-- Кривая температуры -->
-            <path id="path-temp" d="" fill="none" stroke="#2563eb" stroke-width="3"/>
-            
-            <!-- Точка начала кристаллизации -->
-            <circle id="dot-wat" r="5" fill="#000" stroke="#fff" stroke-width="1.5"/>
-            <text id="label-wat-point" x="0" y="0" fill="#000" font-size="11" font-weight="bold"></text>
-            
-            <!-- Легенда -->
-            <line x1="350" y1="260" x2="380" y2="260" stroke="#2563eb" stroke-width="3"/>
-            <text x="390" y="264" fill="#475569" font-size="11">Температура нефти в скважине</text>
-            
-            <line x1="350" y1="280" x2="380" y2="280" stroke="#f59e0b" stroke-width="2.5"/>
-            <text x="390" y="284" fill="#475569" font-size="11">Температура насыщения парафином (Тнп)</text>
-          </svg>
+          <!-- Убедитесь, что картинка лежит по этому пути -->
+          <img src="images/wat_profile.png" alt="Температурный профиль и глубина выпадения АСПО" style="width: 100%; height: auto; border-radius: 8px; display: block;">
         </div>
 
         <!-- Краткая интерпретация -->
@@ -585,12 +531,9 @@
 </footer>
 
 <script>
-  // ===== УПРОЩЁННАЯ МОДЕЛЬ (для демо) =====
-  const H = 2400;         // глубина ствола, м (по скриншоту)
-  const T_RES = -20;      // температура среды, °C
-  const T_FORM = 85;      // температура на забое, °C
-
-  function calcWAT(paraffin) { return 20 + 1.2 * paraffin; }               // °C
+  // ===== УПРОЩЁННАЯ МОДЕЛЬ =====
+  function calcWAT(paraffin) { return 20 + 1.2 * paraffin; } 
+  
   function calcMRP(T, P, Q) {
     const base = 60;
     const fT = T / 30;                          
@@ -598,18 +541,17 @@
     const fQ = 1 + 0.004 * (Q - 45);            
     return Math.max(1, base * fT * fP * fQ);
   }
-  // Линейный профиль температуры
-  function tempProfileLinear(h, Twellhead) {
-    return T_FORM - (T_FORM - Twellhead) * (h / H);
-  }
-  function depthOfWAT(Twellhead, WAT) {
+
+  // Простая функция для расчета глубины (для текста под слайдерами)
+  function calcDepth(Twellhead, WAT) {
+    const H = 2400;
+    const T_FORM = 85;
     if (WAT >= T_FORM) return 0;
     if (WAT <= Twellhead) return H;
     return H * (T_FORM - WAT) / (T_FORM - Twellhead);
   }
 
-  // ===== ОТРИСОВКА =====
-  // График 1 (МРП)
+  // ===== ОТРИСОВКА Графика 1 (МРП) =====
   const X0_mrp = 50, X1_mrp = 580, Y0_mrp = 20, Y1_mrp = 240;
   
   function drawMRP(T, P, Q) {
@@ -637,87 +579,6 @@
     return curMrp;
   }
 
-  // График 2 (Профиль температуры)
-  const X0_temp = 60, X1_temp = 570; // по оси X: 0 - 100 °C
-  const Y0_temp = 20, Y1_temp = 290; // по оси Y: 0 - 2400 м (сверху вниз)
-  
-  function drawTemp(Twellhead, WAT) {
-    const Tmin = 0, Tmax = 100;
-    
-    function mapX_T(t) { return X0_temp + (t - Tmin) / (Tmax - Tmin) * (X1_temp - X0_temp); }
-    function mapY_H(h) { return Y0_temp + (h / H) * (Y1_temp - Y0_temp); } // 0м сверху, H снизу
-
-    // 1. Рисуем кривую температуры
-    const pts = [];
-    for (let h = 0; h <= H; h += 50) {
-      pts.push({ h, T: tempProfileLinear(h, Twellhead) });
-    }
-    const d = pts.map((o, i) => {
-      const x = mapX_T(o.T);
-      const y = mapY_H(o.h);
-      return (i === 0 ? 'M' : 'L') + ` ${x.toFixed(1)} ${y.toFixed(1)}`;
-    }).join(' ');
-    document.getElementById('path-temp').setAttribute('d', d);
-
-    // 2. Позиционируем вертикальную линию WAT
-    const xWAT = mapX_T(WAT);
-    document.getElementById('line-wat').setAttribute('x1', xWAT);
-    document.getElementById('line-wat').setAttribute('x2', xWAT);
-
-    // 3. Находим глубину начала АСПО и ставим точку
-    const depth = depthOfWAT(Twellhead, WAT);
-    const yDepth = mapY_H(depth);
-    
-    const dot = document.getElementById('dot-wat');
-    dot.setAttribute('cx', xWAT);
-    dot.setAttribute('cy', yDepth);
-
-    // Подпись к точке
-    const label = document.getElementById('label-wat-point');
-    label.setAttribute('x', xWAT + 10);
-    label.setAttribute('y', yDepth - 5);
-    if (depth > 0 && depth < H) {
-       label.textContent = `Точка начала кристаллизации (глубина ≈ ${depth.toFixed(0)} м)`;
-       label.style.display = 'block';
-    } else {
-       label.style.display = 'none';
-    }
-
-    // 4. Закрашиваем зоны
-    // Красная зона (сверху, от 0 до WAT). Если WAT < 0, красной зоны нет.
-    // Зеленая зона (снизу, от WAT до 100).
-    const zoneRed = document.getElementById('zone-red');
-    const zoneGreen = document.getElementById('zone-green');
-    
-    // Координаты пересечения линии WAT с верхней/нижней границей графика
-    const wTop = mapY_H(0);
-    const wBottom = mapY_H(H);
-    
-    // Ограничиваем xWAT рамками графика (для отрисовки зон)
-    const safeXWAT = Math.max(X0_temp, Math.min(X1_temp, xWAT));
-
-    // Розовая зона (Температура ВЫШЕ WAT -> x от safeXWAT до X1_temp)
-    zoneRed.setAttribute('x', safeXWAT);
-    zoneRed.setAttribute('y', wTop);
-    zoneRed.setAttribute('width', Math.max(0, X1_temp - safeXWAT));
-    zoneRed.setAttribute('height', wBottom - wTop);
-
-    // Зеленая зона (Температура НИЖЕ WAT -> x от X0_temp до safeXWAT)
-    zoneGreen.setAttribute('x', X0_temp);
-    zoneGreen.setAttribute('y', wTop);
-    zoneGreen.setAttribute('width', Math.max(0, safeXWAT - X0_temp));
-    zoneGreen.setAttribute('height', wBottom - wTop);
-
-    // Текст в зонах
-    document.getElementById('text-zone-red').style.display = (safeXWAT < X1_temp) ? 'block' : 'none';
-    document.getElementById('text-zone-red').setAttribute('x', (safeXWAT + X1_temp) / 2);
-    
-    document.getElementById('text-zone-green').style.display = (safeXWAT > X0_temp) ? 'block' : 'none';
-    document.getElementById('text-zone-green').setAttribute('x', (X0_temp + safeXWAT) / 2);
-
-    return depth;
-  }
-
   // ===== ОБРАБОТКА ВВОДА =====
   function update() {
     const P = parseFloat(document.getElementById('in-paraffin').value);
@@ -730,13 +591,13 @@
 
     const WAT = calcWAT(P);
     const mrp = drawMRP(T, P, Q);
-    const depth = drawTemp(T, WAT);
+    const depth = calcDepth(T, WAT);
 
     document.getElementById('out-mrp').innerText = mrp.toFixed(0);
     document.getElementById('out-wat').innerText = WAT.toFixed(1);
     document.getElementById('out-depth').innerText = depth.toFixed(0);
 
-    const depthNote = (depth > 0 && depth < H)
+    const depthNote = (depth > 0 && depth < 2400)
       ? `Выпадение парафинов начинается с глубины ≈ ${depth.toFixed(0)} м и продолжается до устья.`
       : (depth <= 0 
           ? `Температура на забое ниже WAT — выпадение начинается уже на забое.`
