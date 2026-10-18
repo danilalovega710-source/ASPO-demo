@@ -63,12 +63,6 @@
   .nav-links a:hover { color: var(--accent); transition: 0.3s; }
   .header-actions { display: flex; gap: 15px; align-items: center; }
   
-  .btn-outline {
-    border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 9px 20px;
-    border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.3s;
-  }
-  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
-  
   .btn-header {
     background: var(--primary); color: #fff; padding: 10px 24px;
     border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.3s;
@@ -96,6 +90,12 @@
     display: inline-block; transition: 0.3s; border: none; cursor: pointer;
   }
   .btn-main:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(0, 242, 254, 0.5); }
+  
+  .btn-secondary {
+    background: transparent; color: #fff; padding: 16px 40px; border-radius: 8px; font-size: 16px; font-weight: 600;
+    border: 2px solid rgba(255,255,255,0.2); transition: 0.3s; display: inline-block; cursor: pointer;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,242,254,0.05); }
 
   /* СЕКЦИИ */
   .section-light { padding: 80px 20px; background: var(--bg-light); }
@@ -110,10 +110,9 @@
   .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 10px; }
   .stat-label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
 
-  /* ДАШБОРД (Результаты моделирования) */
+  /* ДАШБОРД */
   .dashboard { display: flex; flex-direction: column; align-items: center; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 40px 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
   
-  /* Контейнер для картинки */
   .chart-image-container { 
     width: 100%; 
     max-width: 700px; 
@@ -145,6 +144,24 @@
   .module-icon { font-size: 2rem; margin-bottom: 15px; }
   .module-card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 10px; }
   .module-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* СТЕК ТЕХНОЛОГИЙ */
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+  }
+  .tech-badge {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+  }
 
   /* ДОКУМЕНТАЦИЯ */
   .docs-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
@@ -205,7 +222,6 @@
       <a href="#contacts">Контакты</a>
     </nav>
     <div class="header-actions">
-      <a href="https://github.com/danilalovega710-source/ASPO-demo" target="_blank" class="btn-outline">GitHub</a>
       <a href="#contacts" class="btn-header">Оставить запрос</a>
     </div>
   </div>
@@ -218,6 +234,8 @@
     <p>Программный комплекс на Python для прогнозирования асфальтосмолопарафиновых отложений (АСПО), автоматического выбора методов очистки и расчета экономической эффективности.</p>
     <div class="hero-buttons">
       <a href="#demo" class="btn-main">Перейти к анализу</a>
+      <!-- Кнопка для скачивания презентации (если файла нет, удалите или замените ссылку) -->
+      <a href="#" class="btn-secondary" download>Скачать презентацию (PDF)</a>
     </div>
   </div>
 </section>
@@ -256,7 +274,6 @@
     <p class="section-subtitle fade-in-up">Пример прогноза распределения температуры по стволу скважины и определение глубины начала отложения АСПО.</p>
 
     <div class="dashboard fade-in-up">
-      <!-- Верхний ряд: Три карточки с выводами -->
       <div class="stats-grid" style="margin-top: 0; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); width: 100%;">
         <div class="stat-item" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
           <div class="stat-number" style="color: #00f2fe; font-size: 2.2rem;">40 °C</div>
@@ -272,7 +289,6 @@
         </div>
       </div>
 
-      <!-- Картинка по центру -->
       <div class="chart-image-container">
         <div class="chart-header" style="color: #64748b; margin-bottom: 10px; font-weight: 600; text-align: center;">
           <span>Глубина выпадения АСПО (Температурный профиль)</span>
@@ -366,7 +382,7 @@
   </div>
 </section>
 
-<!-- МОДУЛИ -->
+<!-- МОДУЛИ И СТЕК -->
 <section id="modules" class="section-dark" style="background: #0a192f;">
   <div class="container">
     <h2 class="section-title fade-in-up" style="color: #fff;">Модули программного комплекса</h2>
@@ -402,6 +418,19 @@
         <div class="module-icon">📄</div>
         <h3>Модуль отчетности и экспорта</h3>
         <p>Автоматически генерирует графики (Matplotlib), формирует детальные отчеты в формате PDF и Excel. Поддерживает выгрузку рекомендаций для инженеров-технологов.</p>
+      </div>
+    </div>
+
+    <!-- СТЕК ТЕХНОЛОГИЙ -->
+    <div class="fade-in-up" style="text-align: center; margin-top: 60px;">
+      <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.2rem;">Стек технологий</h3>
+      <div class="tech-stack">
+        <span class="tech-badge">Python 3.10+</span>
+        <span class="tech-badge">ООП (Объектно-ориентированное программирование)</span>
+        <span class="tech-badge">Pandas & NumPy (Обработка данных)</span>
+        <span class="tech-badge">Matplotlib (Визуализация)</span>
+        <span class="tech-badge">Теплофизическое моделирование</span>
+        <span class="tech-badge">Финансовый анализ (NPV/ROI)</span>
       </div>
     </div>
   </div>
