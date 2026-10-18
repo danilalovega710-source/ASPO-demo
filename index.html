@@ -253,13 +253,8 @@
           <div class="chart-header" style="color: #64748b; margin-bottom: 10px; padding: 0 10px;">
             <span>Глубина выпадения АСПО (Температурный профиль)</span>
           </div>
-          <!-- Убедитесь, что картинка лежит по этому пути -->
-          <img src="images/wat_profile.png" alt="Температурный профиль и глубина выпадения АСПО" style="width: 100%; height: auto; border-radius: 8px; display: block;">
-        </div>
-
-        <!-- Краткая интерпретация -->
-        <div style="padding:16px 20px; background:rgba(0,242,254,0.08); border-left:4px solid #00f2fe; border-radius:8px; color:#fff;">
-          <p id="interpretation" style="font-size:14px; line-height:1.6; margin:0;"></p>
+          <!-- Картинка лежит в корне репозитория вместе с index.html -->
+          <img src="wat-profile.png" alt="Температурный профиль и глубина выпадения АСПО" style="width: 100%; height: auto; border-radius: 8px; display: block;">
         </div>
       </div>
     </div>
@@ -532,7 +527,7 @@
 
 <script>
   // ===== УПРОЩЁННАЯ МОДЕЛЬ =====
-  function calcWAT(paraffin) { return 20 + 1.2 * paraffin; } 
+  function calcWAT(paraffin) { return 25 + 1.6 * paraffin; } 
   
   function calcMRP(T, P, Q) {
     const base = 60;
@@ -542,7 +537,6 @@
     return Math.max(1, base * fT * fP * fQ);
   }
 
-  // Простая функция для расчета глубины (для текста под слайдерами)
   function calcDepth(Twellhead, WAT) {
     const H = 2400;
     const T_FORM = 85;
@@ -596,16 +590,6 @@
     document.getElementById('out-mrp').innerText = mrp.toFixed(0);
     document.getElementById('out-wat').innerText = WAT.toFixed(1);
     document.getElementById('out-depth').innerText = depth.toFixed(0);
-
-    const depthNote = (depth > 0 && depth < 2400)
-      ? `Выпадение парафинов начинается с глубины ≈ ${depth.toFixed(0)} м и продолжается до устья.`
-      : (depth <= 0 
-          ? `Температура на забое ниже WAT — выпадение начинается уже на забое.`
-          : `Температура по всему стволу выше WAT — выпадение парафинов маловероятно.`);
-          
-    document.getElementById('interpretation').innerText =
-      `При содержании парафина ${P.toFixed(1)}%, температуре нефти (устье) ${T}°C и дебите ${Q} т/сут ` +
-      `прогнозируемый МРП составляет ≈ ${mrp.toFixed(0)} дней. ${depthNote}`;
   }
 
   document.addEventListener('DOMContentLoaded', () => {
