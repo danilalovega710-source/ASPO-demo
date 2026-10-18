@@ -76,7 +76,7 @@
   .section-subtitle { text-align: center; font-size: 1.1rem; color: var(--text-muted); margin-bottom: 50px; max-width: 700px; margin-left: auto; margin-right: auto; }
   .container { max-width: 1200px; margin: 0 auto; }
 
-  /* ОЖИДАЕМЫЙ ЭФФЕКТ */
+  /* ЭФФЕКТ */
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; margin-top: 40px; }
   .stat-item { text-align: center; padding: 25px; background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
   .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 10px; }
@@ -113,12 +113,28 @@
   .module-card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 10px; }
   .module-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
 
-  /* ДОКУМЕНТАЦИЯ */
-  .docs-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-  .docs-step { margin-bottom: 30px; }
-  .docs-step h4 { font-size: 1.2rem; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-  .docs-step p { font-size: 0.95rem; color: #475569; }
-  .code-block { background: #f1f5f9; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.9rem; color: #0f172a; border-left: 4px solid var(--primary); margin-top: 10px; }
+  /* МЕТОДОЛОГИЯ */
+  .methodology-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; }
+  @media (max-width: 900px) { .methodology-grid { grid-template-columns: 1fr; } }
+  .method-card { background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+  .method-card h3 { color: var(--primary); margin-bottom: 20px; }
+  .step-item { display: flex; gap: 15px; margin-bottom: 20px; }
+  .step-num { width: 30px; height: 30px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+  .step-text h4 { font-size: 15px; margin-bottom: 5px; }
+  .step-text p { font-size: 13px; color: #666; }
+
+  /* ДОКУМЕНТАЦИЯ (АККОРДЕОН) */
+  .docs-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
+  details { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+  summary { padding: 20px; font-size: 1.1rem; font-weight: 600; color: var(--text-dark); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  details[open] > summary > span:last-child { transform: rotate(45deg); display: inline-block; color: #c0392b; }
+  details[open] > summary { border-bottom: 1px solid #e2e8f0; background-color: #f8fafc; }
+  .details-content { padding: 20px; color: #475569; font-size: 0.95rem; }
+
+  /* КОНТАКТЫ */
+  .contact-form { max-width: 400px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+  .contact-form input { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; }
 
   /* ФУТЕР */
   footer { background: #020617; color: var(--text-muted); padding: 40px 20px; text-align: center; font-size: 0.9rem; border-top: 1px solid var(--border); }
@@ -273,6 +289,99 @@
   </div>
 </section>
 
+<!-- МЕТОДОЛОГИЯ (АЛГОРИТМ) -->
+<section id="science" class="section-light">
+  <div class="container">
+    <h2 class="section-title">Алгоритм работы комплекса</h2>
+    <p class="section-subtitle">Программа выполняет пошаговый инженерный расчет: от ввода промысловых данных до выдачи готового экономического обоснования.</p>
+
+    <div class="methodology-grid">
+      
+      <!-- Левая колонка: Шаги алгоритма -->
+      <div class="method-card">
+        <h3>Пошаговый расчет</h3>
+        
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <h4>Анализ условий скважины</h4>
+            <p>Программа считывает текущие параметры (дебит, обводненность, температуру, давление) и определяет физическую возможность применения каждого метода очистки.</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <h4>Теплофизический расчет</h4>
+            <p>Моделируется распределение температуры по стволу скважины. Находится глубина, на которой температура падает ниже точки насыщения парафинов (WAT).</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <h4>Многокритериальный выбор</h4>
+            <p>Система оценивает доступные методы по 5 критериям (эффективность, стоимость, безопасность и др.) и выбирает оптимальный с учетом весов, заданных инженером.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <h4>Экономическая оценка</h4>
+            <p>Рассчитываются затраты на обработку, потери от простоя и дополнительная добыча. Формируется итоговый показатель NPV (чистая приведенная стоимость).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Правая колонка: Таблица ограничений -->
+      <div class="method-card">
+        <h3>Физические ограничения методов</h3>
+        <p style="font-size: 14px; color: #555; margin-bottom: 15px;">
+          В программе реализована строгая проверка применимости методов. Если условия выходят за рамки, метод блокируется:
+        </p>
+        
+        <table style="width: 100%; font-size: 13px; border-collapse: collapse; margin-top: 10px;">
+          <thead>
+            <tr style="background: #f8fafc; color: #333;">
+              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Метод</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Температура (T)</th>
+              <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Парафин (P)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">Механическая</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">-50 ... 150 °C</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">0 ... 30 %</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">Химическая</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">10 ... 120 °C</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee;">3 ... 40 %</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; border-bottom: 1px solid #eee; color: #c0392b;">Тепловая</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee; color: #c0392b;">-80 ... 60 °C</td>
+              <td style="padding: 10px; border-bottom: 1px solid #eee; color: #c0392b;">5 ... 40 %</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px;">Ультразвуковая</td>
+              <td style="padding: 10px;">-100 ... 200 °C</td>
+              <td style="padding: 10px;">0 ... 50 %</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="margin-top: 20px; padding: 15px; background: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 4px; font-size: 13px; color: #166534;">
+          <b>Пример:</b> Если температура нефти превышает 60°C, программа автоматически исключит «Тепловую обработку» из списка доступных методов, так как она будет неэффективна.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- МОДУЛИ -->
 <section id="modules" class="section-dark" style="background: #0a192f;">
   <div class="container">
@@ -314,34 +423,123 @@
   </div>
 </section>
 
-<!-- ДОКУМЕНТАЦИЯ -->
-<section id="docs" class="section-light">
+<!-- ПОДРОБНОЕ РУКОВОДСТВО ПОЛЬЗОВАТЕЛЯ -->
+<section id="docs" class="section-light" style="padding-bottom: 80px;">
   <div class="container">
     <h2 class="section-title">Руководство пользователя</h2>
-    <p class="section-subtitle">Быстрый старт для работы с программным комплексом АСПО.НЕТ</p>
+    <p class="section-subtitle">Пошаговая инструкция по работе с программным комплексом АСПО.НЕТ (консольная версия)</p>
 
     <div class="docs-container">
-      <div class="docs-step">
-        <h4>1. Установка окружения</h4>
-        <p>Программа написана на Python 3.10+. Для работы необходимо установить зависимости. Откройте терминал в папке с проектом и выполните:</p>
-        <div class="code-block">pip install -r requirements.txt</div>
-      </div>
       
-      <div class="docs-step">
-        <h4>2. Запуск программы</h4>
-        <p>Запустите главный файл приложения. Откроется интерактивное меню (в консоли или в веб-интерфейсе Streamlit, в зависимости от версии):</p>
-        <div class="code-block">python main.py</div>
-      </div>
+      <!-- Шаг 1 -->
+      <details>
+        <summary>
+          <span>1. Запуск программы и настройка окружения</span>
+          <span style="color: var(--primary); font-size: 1.5rem; line-height: 1;">+</span>
+        </summary>
+        <div class="details-content">
+          <p style="margin-bottom: 10px;">Для работы программы необходим установленный <b>Python 3.10 или выше</b>. Все зависимости описаны в файле <code>requirements.txt</code>.</p>
+          <p style="margin-bottom: 10px;">Откройте терминал (командную строку) в папке с проектом и выполните команду для установки библиотек:</p>
+          <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; font-family: monospace; color: #0f172a; margin-bottom: 15px;">pip install -r requirements.txt</div>
+          <p style="margin-bottom: 10px;">После успешной установки запустите главный файл:</p>
+          <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; font-family: monospace; color: #0f172a;">python main.py</div>
+        </div>
+      </details>
 
-      <div class="docs-step">
-        <h4>3. Ввод параметров</h4>
-        <p>В главном меню выберите «Добавить новую скважину». Программа попросит ввести базовые параметры: дебит, обводненность, пластовое давление и температуру. На основе этих данных будет построен первичный профиль.</p>
-      </div>
+      <!-- Шаг 2 -->
+      <details>
+        <summary>
+          <span>2. Создание новой скважины (Ввод параметров)</span>
+          <span style="color: var(--primary); font-size: 1.5rem; line-height: 1;">+</span>
+        </summary>
+        <div class="details-content">
+          <p style="margin-bottom: 10px;">В главном меню выберите пункт <b>«1. Добавить новую скважину»</b>. Программа попросит ввести имя скважины и её физические параметры.</p>
+          <p style="margin-bottom: 10px;"><b>Пример ввода данных:</b></p>
+          <ul style="list-style-type: disc; padding-left: 20px; margin-bottom: 15px;">
+            <li>Начальная толщина АСПО: <code>1.0</code> мм</li>
+            <li>Температура нефти: <code>30</code> °C</li>
+            <li>Температура среды: <code>-20</code> °C</li>
+            <li>Дебит: <code>45</code> м³/сут</li>
+            <li>Содержание парафина: <code>9.2</code> %</li>
+            <li>Пластовое давление: <code>160</code> атм</li>
+            <li>Диаметр НКТ: <code>73</code> мм</li>
+          </ul>
+          <p>Если вы оставите поле пустым и нажмёте <i>Enter</i>, программа подставит значение по умолчанию. После ввода всех параметров скважина появится в общем списке парка.</p>
+        </div>
+      </details>
 
-      <div class="docs-step">
-        <h4>4. Получение прогноза</h4>
-        <p>Выберите пункт «Запустить симуляцию». Программа смоделирует работу скважины на 365 дней вперед. В результате вы получите график роста АСПО и рекомендацию: <em>«Рекомендуемая дата следующей обработки — через N дней»</em>.</p>
-      </div>
+      <!-- Шаг 3 -->
+      <details>
+        <summary>
+          <span>3. Запуск симуляции и прогнозирование</span>
+          <span style="color: var(--primary); font-size: 1.5rem; line-height: 1;">+</span>
+        </summary>
+        <div class="details-content">
+          <p style="margin-bottom: 10px;">Выберите в меню <b>«5. Запустить симуляцию»</b>. Программа смоделирует работу скважины на заданный период (по умолчанию — 365 дней).</p>
+          <p style="margin-bottom: 10px;">В процессе симуляции программа будет автоматически:</p>
+          <ul style="list-style-type: disc; padding-left: 20px; margin-bottom: 15px;">
+            <li>Рассчитывать рост отложений (АСПО) день за днём.</li>
+            <li>Отслеживать достижение критического порога (когда требуется очистка).</li>
+            <li>Автоматически выбирать лучший метод очистки (Химический, Механический и т.д.) на основе текущих условий.</li>
+          </ul>
+          <p style="background: #f0fdf4; padding: 10px; border-left: 4px solid #22c55e; border-radius: 4px;">После завершения вы увидите график роста толщины АСПО и журнал событий (когда и какая очистка была проведена).</p>
+        </div>
+      </details>
+
+      <!-- Шаг 4 -->
+      <details>
+        <summary>
+          <span>4. Экономический анализ (NPV и ROI)</span>
+          <span style="color: var(--primary); font-size: 1.5rem; line-height: 1;">+</span>
+        </summary>
+        <div class="details-content">
+          <p style="margin-bottom: 10px;">Чтобы узнать, сколько денег сэкономит программа, выберите пункт <b>«6. Запустить симуляцию с экономикой»</b>.</p>
+          <p style="margin-bottom: 10px;">Вам будет предложено ввести объём инвестиций (по умолчанию 150 000 000 руб.). На основе этих данных программа рассчитает:</p>
+          <ul style="list-style-type: disc; padding-left: 20px; margin-bottom: 15px;">
+            <li><b>NPV</b> (чистый дисконтированный доход) — сколько вы заработаете с учётом инфляции.</li>
+            <li><b>ROI</b> (рентабельность инвестиций) — насколько окупятся вложения.</li>
+            <li><b>Срок окупаемости</b> — через сколько дней программа выйдет в плюс.</li>
+            <li><b>Потери от простоя</b> — сколько вы теряете, пока скважина не работает.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Шаг 5 -->
+      <details>
+        <summary>
+          <span>5. Анализ МРП (Межремонтный период) и эффективности</span>
+          <span style="color: var(--primary); font-size: 1.5rem; line-height: 1;">+</span>
+        </summary>
+        <div class="details-content">
+          <p style="margin-bottom: 10px;">Пункт меню <b>«20. Анализ МРП/МОП и эффективности»</b> позволяет оценить, как ваш прогноз повлиял на межремонтный период.</p>
+          <p style="margin-bottom: 10px;">Вы можете:</p>
+          <ul style="list-style-type: disc; padding-left: 20px; margin-bottom: 15px;">
+            <li>Сравнить МРП «До» (ручной режим) и «После» (автоматический режим).</li>
+            <li>Посмотреть рейтинг скважин по длительности МРП.</li>
+            <li>Увидеть, на сколько дней удалось продлить работу скважины без ремонта.</li>
+          </ul>
+          <p>Этот блок доказывает, что ваша программа не просто «считает цифры», а реально продлевает жизнь скважине.</p>
+        </div>
+      </details>
+
+      <!-- Шаг 6 -->
+      <details>
+        <summary>
+          <span>6. Экспорт отчетов и сохранение данных</span>
+          <span style="color: var(--primary); font-size: 1.5rem; line-height: 1;">+</span>
+        </summary>
+        <div class="details-content">
+          <p style="margin-bottom: 10px;">Когда вы закончите симуляцию, вам нужно будет предоставить отчет. Для этого выберите <b>«17. Сгенерировать отчет»</b>.</p>
+          <p style="margin-bottom: 10px;">Программа предложит два формата:</p>
+          <ul style="list-style-type: disc; padding-left: 20px; margin-bottom: 15px;">
+            <li><b>HTML</b> — красивый отчет, который можно открыть в браузере и распечатать.</li>
+            <li><b>Markdown</b> — текстовый отчет для дальнейшей вставки в диплом или документацию.</li>
+          </ul>
+          <p style="margin-bottom: 10px;">Также через меню <b>«12. Экспорт данных»</b> можно выгрузить все результаты симуляции в <b>Excel</b> или <b>CSV</b> для построения собственных графиков.</p>
+          <p style="background: #f1f5f9; padding: 10px; border-radius: 4px; font-family: monospace; font-size: 0.85rem; color: #0f172a;">Сохраните файл, чтобы не потерять результаты при перезапуске программы (меню 9 — «Сохранить данные»).</p>
+        </div>
+      </details>
+
     </div>
   </div>
 </section>
@@ -352,9 +550,9 @@
     <h2 class="section-title">Оставить заявку</h2>
     <p class="section-subtitle">Оставьте свои контакты для получения демо-доступа или консультации по внедрению.</p>
     
-    <div style="max-width: 400px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-      <input type="text" placeholder="Ваше имя" style="width:100%; padding:15px; margin-bottom:15px; border:1px solid #cbd5e1; border-radius:8px; font-size: 16px;">
-      <input type="email" placeholder="E-mail или телефон" style="width:100%; padding:15px; margin-bottom:15px; border:1px solid #cbd5e1; border-radius:8px; font-size: 16px;">
+    <div class="contact-form">
+      <input type="text" placeholder="Ваше имя">
+      <input type="email" placeholder="E-mail или телефон">
       <button class="btn-main" style="width:100%;">Отправить</button>
     </div>
   </div>
@@ -397,14 +595,9 @@
     const path = document.getElementById('chart-path-1');
     
     // Чем быстрее растет (больше rate), тем чаще пики (меньше дней)
-    // Мы рисуем 4 цикла очистки на графике.
-    // X-координаты точек сброса зависят от скорости.
-    // Если rate большой, мы достигаем 4.5 мм быстро (например, за 50 пикселей).
-    // Если rate маленький, мы достигаем порога медленно (за 150 пикселей).
-    
     let cycleWidth = 150 / (rate / 2); 
-    if (cycleWidth > 140) cycleWidth = 140; // Минимум места для роста
-    if (cycleWidth < 40) cycleWidth = 40;   // Максимум (очень быстрый рост)
+    if (cycleWidth > 140) cycleWidth = 140;
+    if (cycleWidth < 40) cycleWidth = 40;
 
     let yMax = 60; // Верхняя точка (порог)
     let yMin = 180; // Нижняя точка (после очистки)
@@ -429,11 +622,6 @@
     }
 
     path.setAttribute('d', d);
-
-    // Динамически двигаем маркеры (красные точки) на пиках
-    // (Для простоты в этом коде мы просто скрываем старые точки, если хотим идеала, 
-    // но пока оставим статичные для красоты, либо можно их пересчитать. 
-    // Оставим их для наглядности того, что "очистка произошла").
   }
 
   // Инициализация при загрузке
