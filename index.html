@@ -82,36 +82,21 @@
   .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 10px; }
   .stat-label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
 
-  /* ДАШБОРД */
-  .dashboard { display: grid; grid-template-columns: 350px 1fr; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  /* ДАШБОРД (Научный анализ) */
+  .dashboard { display: grid; grid-template-columns: 300px 1fr; gap: 30px; background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
   @media (max-width: 900px) { .dashboard { grid-template-columns: 1fr; } }
   
   .control-panel { display: flex; flex-direction: column; gap: 20px; }
-  .form-group label { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
-  .form-group label span { color: var(--accent); font-weight: 700; }
-  input[type=range] { width: 100%; -webkit-appearance: none; background: transparent; }
-  input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 6px; background: #1e3a8a; border-radius: 3px; }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%;
-    background: var(--accent); cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px var(--accent);
+  .btn-outline-active {
+    background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #e2e8f0;
+    padding: 12px 20px; border-radius: 8px; cursor: pointer; text-align: left; transition: 0.2s; font-size: 14px;
   }
+  .btn-outline-active:hover { background: rgba(255,255,255,0.05); }
+  .btn-outline-active.active { background: var(--primary); border-color: var(--primary); color: #fff; font-weight: 600; }
   
   .charts-area { display: flex; flex-direction: column; gap: 20px; }
-  .chart-box { background: #0a192f; border-radius: 16px; padding: 20px; position: relative; }
+  .chart-box { background: #0a192f; border-radius: 16px; padding: 20px; position: relative; display: flex; flex-direction: column; }
   .chart-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 14px; color: var(--text-muted); }
-  .chart-value { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 15px; }
-  .chart-value span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
-
-  /* МОДУЛИ */
-  .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-  .module-card {
-    background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px; padding: 30px; transition: 0.3s;
-  }
-  .module-card:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--accent); transform: translateY(-5px); }
-  .module-icon { font-size: 2rem; margin-bottom: 15px; }
-  .module-card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 10px; }
-  .module-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
 
   /* МЕТОДОЛОГИЯ */
   .methodology-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; }
@@ -122,6 +107,14 @@
   .step-num { width: 30px; height: 30px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
   .step-text h4 { font-size: 15px; margin-bottom: 5px; }
   .step-text p { font-size: 13px; color: #666; }
+
+  /* МОДУЛИ */
+  .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+  .module-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 30px; transition: 0.3s; }
+  .module-card:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--accent); transform: translateY(-5px); }
+  .module-icon { font-size: 2rem; margin-bottom: 15px; }
+  .module-card h3 { font-size: 1.2rem; color: #fff; margin-bottom: 10px; }
+  .module-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
 
   /* ДОКУМЕНТАЦИЯ (АККОРДЕОН) */
   .docs-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
@@ -166,7 +159,7 @@
   <div class="hero-content">
     <h1>Управляйте скважинами <br><span>на основе данных</span></h1>
     <p>Программный комплекс на Python для прогнозирования асфальтосмолопарафиновых отложений (АСПО), автоматического выбора методов очистки и расчета экономической эффективности.</p>
-    <a href="#demo" class="btn-main">Открыть симулятор</a>
+    <a href="#demo" class="btn-main">Перейти к анализу</a>
   </div>
 </section>
 
@@ -197,93 +190,65 @@
   </div>
 </section>
 
-<!-- ИНТЕРАКТИВНЫЙ ДАШБОРД -->
+<!-- НАУЧНАЯ ДЕМОНСТРАЦИЯ (SENSITIVITY ANALYSIS) -->
 <section id="demo" class="section-dark">
   <div class="container">
-    <h2 class="section-title" style="color: #fff;">Симулятор обработки скважины</h2>
-    <p class="section-subtitle">Измените параметры работы скважины и посмотрите, как изменится динамика накопления АСПО и рекомендации по методам очистки.</p>
+    <h2 class="section-title" style="color: #fff;">Анализ чувствительности модели</h2>
+    <p class="section-subtitle">Исследуйте, как изменение ключевых параметров скважины влияет на межремонтный период (МРП) и экономический эффект.</p>
 
-    <div class="dashboard">
+    <div class="dashboard" style="grid-template-columns: 300px 1fr;">
       <!-- Панель управления -->
       <div class="control-panel">
-        <div class="form-group">
-          <label>Дебит (т/сут) <span id="val-debit">45</span></label>
-          <input type="range" id="range-debit" min="10" max="150" value="45" oninput="updateDashboard()">
-        </div>
-        <div class="form-group">
-          <label>Обводненность (%) <span id="val-water">20</span></label>
-          <input type="range" id="range-water" min="0" max="90" value="20" oninput="updateDashboard()">
-        </div>
-        <div class="form-group">
-          <label>Содержание парафина (%) <span id="val-paraffin">8</span></label>
-          <input type="range" id="range-paraffin" min="1" max="25" value="8" oninput="updateDashboard()">
-        </div>
+        <h3 style="color: #fff; margin-bottom: 20px; font-size: 1.2rem;">Выберите параметр</h3>
         
-        <button class="btn-main" style="margin-top: 20px;" onclick="updateDashboard()">Пересчитать модель</button>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="btn-outline-active" onclick="changeParam('paraffin', this)">Содержание парафина</button>
+          <button class="btn-outline-active" onclick="changeParam('temp', this)">Температура нефти</button>
+          <button class="btn-outline-active" onclick="changeParam('debit', this)">Дебит скважины</button>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+          <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">Базовые условия:</p>
+          <ul style="font-size: 13px; color: #e2e8f0; list-style: none; padding: 0;">
+            <li style="margin-bottom: 5px;">Дебит: <b id="base-debit">45</b> т/сут</li>
+            <li style="margin-bottom: 5px;">Парафин: <b id="base-paraffin">9.2</b> %</li>
+            <li>Температура: <b id="base-temp">30</b> °C</li>
+          </ul>
+        </div>
       </div>
 
-      <!-- Графики -->
+      <!-- График -->
       <div class="charts-area">
-        
-        <!-- График 1: Динамика (Пила) -->
-        <div class="chart-box">
+        <div class="chart-box" style="height: 100%;">
           <div class="chart-header">
-            <span>Динамика роста АСПО и циклы очистки</span>
-            <span>Толщина (мм)</span>
-          </div>
-          <div class="chart-value" id="chart-result">2.45 <span>мм/мес (средний темп)</span></div>
-          
-          <svg id="chart-svg-1" viewBox="0 0 600 200" style="width: 100%; height: auto;">
-            <!-- Сетка -->
-            <line x1="0" y1="50" x2="600" y2="50" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="0" y1="100" x2="600" y2="100" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="0" y1="150" x2="600" y2="150" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
-            
-            <!-- Линия графика (Пила) -->
-            <!-- Начало: X=0 Y=180. Рост до Y=60. Сброс до Y=180. И т.д. -->
-            <path id="chart-path-1" d="M 0 180 L 150 60 L 150 180 L 300 60 L 300 180 L 450 60 L 450 180 L 600 60" fill="none" stroke="#00f2fe" stroke-width="3" stroke-linejoin="round"/>
-            
-            <!-- Точки очистки (маркеры падения) -->
-            <circle cx="150" cy="60" r="5" fill="#ef4444" />
-            <circle cx="300" cy="60" r="5" fill="#ef4444" />
-            <circle cx="450" cy="60" r="5" fill="#ef4444" />
-          </svg>
-
-          <div style="display: flex; justify-content: space-between; margin-top: 10px; color: #94a3b8; font-size: 12px;">
-            <span>Месяц 1</span>
-            <span>Месяц 2</span>
-            <span>Месяц 3</span>
-            <span>Месяц 4</span>
-          </div>
-
-          <div style="margin-top: 15px; padding: 12px; background: rgba(0, 242, 254, 0.1); border-left: 4px solid #00f2fe; border-radius: 4px; color: #fff; font-size: 14px;">
-            Рекомендуемая обработка: <strong style="color: #00f2fe;" id="rec-days">через 42 дня</strong>
-          </div>
-        </div>
-
-        <!-- График 2: Сравнение методов (Столбики) -->
-        <div class="chart-box">
-          <div class="chart-header">
-            <span>Интегральный балл методов очистки</span>
-            <span>Баллы (0-100)</span>
+            <span id="chart-title">Влияние содержания парафина на МРП</span>
+            <span>МРП (дней)</span>
           </div>
           
-          <svg id="chart-svg-2" viewBox="0 0 600 150" style="width: 100%; height: auto;">
-             <!-- Химическая -->
-             <rect x="50" y="10" width="40" height="120" fill="#00f2fe" rx="4"/>
-             <text x="70" y="145" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Arial">Хим.</text>
-             <!-- Механическая -->
-             <rect x="200" y="40" width="40" height="90" fill="#3b82f6" rx="4"/>
-             <text x="220" y="145" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Arial">Мех.</text>
-             <!-- Тепловая -->
-             <rect x="350" y="70" width="40" height="60" fill="#60a5fa" rx="4"/>
-             <text x="370" y="145" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Arial">Тепловая</text>
-             <!-- Ультразвуковая -->
-             <rect x="500" y="100" width="40" height="30" fill="#1e3a8a" rx="4"/>
-             <text x="520" y="145" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="Arial">УЗ</text>
+          <svg id="sensitivity-chart" viewBox="0 0 600 300" style="width: 100%; height: auto;">
+            <line x1="50" y1="250" x2="580" y2="250" stroke="#1e3a8a" stroke-width="2"/>
+            <line x1="50" y1="20" x2="50" y2="250" stroke="#1e3a8a" stroke-width="2"/>
+            
+            <line x1="50" y1="200" x2="580" y2="200" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="50" y1="150" x2="580" y2="150" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="50" y1="100" x2="580" y2="100" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="50" y1="50" x2="580" y2="50" stroke="#1e3a8a" stroke-width="1" stroke-dasharray="4,4"/>
+
+            <text id="x-label-1" x="50" y="270" fill="#94a3b8" font-size="12" text-anchor="middle">1%</text>
+            <text id="x-label-2" x="315" y="270" fill="#94a3b8" font-size="12" text-anchor="middle">10%</text>
+            <text id="x-label-3" x="580" y="270" fill="#94a3b8" font-size="12" text-anchor="middle">20%</text>
+
+            <path id="sensitivity-path" d="M 50 50 L 315 150 L 580 250" fill="none" stroke="#00f2fe" stroke-width="4" stroke-linejoin="round"/>
+            <g id="sensitivity-dots"></g>
           </svg>
         </div>
 
+        <div style="margin-top: 20px; padding: 20px; background: rgba(0, 242, 254, 0.1); border-left: 4px solid #00f2fe; border-radius: 8px; color: #fff;">
+          <h4 style="margin-bottom: 10px; color: #00f2fe;">Научный вывод</h4>
+          <p id="scientific-conclusion" style="font-size: 14px; line-height: 1.6;">
+            При увеличении содержания парафина с 1% до 20% межремонтный период (МРП) сокращается в 8 раз (со 120 до 15 дней). Это требует более частых обработок.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -296,8 +261,6 @@
     <p class="section-subtitle">Программа выполняет пошаговый инженерный расчет: от ввода промысловых данных до выдачи готового экономического обоснования.</p>
 
     <div class="methodology-grid">
-      
-      <!-- Левая колонка: Шаги алгоритма -->
       <div class="method-card">
         <h3>Пошаговый расчет</h3>
         
@@ -334,7 +297,6 @@
         </div>
       </div>
 
-      <!-- Правая колонка: Таблица ограничений -->
       <div class="method-card">
         <h3>Физические ограничения методов</h3>
         <p style="font-size: 14px; color: #555; margin-bottom: 15px;">
@@ -377,7 +339,6 @@
           <b>Пример:</b> Если температура нефти превышает 60°C, программа автоматически исключит «Тепловую обработку» из списка доступных методов, так как она будет неэффективна.
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -431,7 +392,6 @@
 
     <div class="docs-container">
       
-      <!-- Шаг 1 -->
       <details>
         <summary>
           <span>1. Запуск программы и настройка окружения</span>
@@ -446,7 +406,6 @@
         </div>
       </details>
 
-      <!-- Шаг 2 -->
       <details>
         <summary>
           <span>2. Создание новой скважины (Ввод параметров)</span>
@@ -468,7 +427,6 @@
         </div>
       </details>
 
-      <!-- Шаг 3 -->
       <details>
         <summary>
           <span>3. Запуск симуляции и прогнозирование</span>
@@ -486,7 +444,6 @@
         </div>
       </details>
 
-      <!-- Шаг 4 -->
       <details>
         <summary>
           <span>4. Экономический анализ (NPV и ROI)</span>
@@ -504,7 +461,6 @@
         </div>
       </details>
 
-      <!-- Шаг 5 -->
       <details>
         <summary>
           <span>5. Анализ МРП (Межремонтный период) и эффективности</span>
@@ -522,7 +478,6 @@
         </div>
       </details>
 
-      <!-- Шаг 6 -->
       <details>
         <summary>
           <span>6. Экспорт отчетов и сохранение данных</span>
@@ -564,68 +519,80 @@
 </footer>
 
 <script>
-  // Логика интерактивного дашборда
-  function updateDashboard() {
-    // Получаем значения из ползунков
-    const debit = parseInt(document.getElementById('range-debit').value);
-    const water = parseInt(document.getElementById('range-water').value);
-    const paraffin = parseInt(document.getElementById('range-paraffin').value);
-
-    // Обновляем текстовые значения рядом с ползунками
-    document.getElementById('val-debit').innerText = debit;
-    document.getElementById('val-water').innerText = water;
-    document.getElementById('val-paraffin').innerText = paraffin;
-
-    // Имитация математической модели
-    let baseRate = (paraffin * 0.1) + (water * 0.02);
-    let flowFactor = 1 / (debit / 50 + 0.5); 
-    let rate = baseRate * flowFactor;
-    
-    if (rate < 0.5) rate = 0.5;
-    if (rate > 8.0) rate = 8.0;
-
-    let criticalThickness = 4.5;
-    let days = Math.round(criticalThickness / rate);
-
-    // Обновляем цифры
-    document.getElementById('chart-result').innerHTML = `${rate.toFixed(2)} <span>мм/мес</span>`;
-    document.getElementById('rec-days').innerText = `через ${days} дней`;
-
-    // Обновляем SVG График (Пила)
-    const path = document.getElementById('chart-path-1');
-    
-    // Чем быстрее растет (больше rate), тем чаще пики (меньше дней)
-    let cycleWidth = 150 / (rate / 2); 
-    if (cycleWidth > 140) cycleWidth = 140;
-    if (cycleWidth < 40) cycleWidth = 40;
-
-    let yMax = 60; // Верхняя точка (порог)
-    let yMin = 180; // Нижняя точка (после очистки)
-
-    let d = `M 0 ${yMin} `;
-    
-    let currentX = 0;
-    let cycles = 0;
-
-    // Строим "пилу" динамически
-    while (currentX < 600 && cycles < 10) {
-        // Рост
-        currentX += cycleWidth;
-        if (currentX > 600) currentX = 600;
-        d += `L ${currentX} ${yMax} `;
-        
-        // Сброс (очистка)
-        if (currentX < 600) {
-            d += `L ${currentX} ${yMin} `;
-        }
-        cycles++;
+  // Данные для графиков чувствительности (имитация расчетов вашей Python-модели)
+  const sensitivityData = {
+    paraffin: {
+      title: 'Влияние содержания парафина на МРП',
+      xLabels: ['1%', '10%', '20%'],
+      points: [
+        { x: 50, y: 50, val: 120 },
+        { x: 315, y: 150, val: 60 },
+        { x: 580, y: 250, val: 15 }
+      ],
+      conclusion: 'При увеличении содержания парафина с 1% до 20% межремонтный период (МРП) сокращается в 8 раз (со 120 до 15 дней). Это требует более частых обработок.'
+    },
+    temp: {
+      title: 'Влияние температуры нефти на МРП',
+      xLabels: ['10°C', '40°C', '80°C'],
+      points: [
+        { x: 50, y: 250, val: 10 },
+        { x: 315, y: 100, val: 75 },
+        { x: 580, y: 40, val: 130 }
+      ],
+      conclusion: 'При повышении температуры с 10°C до 80°C МРП увеличивается в 13 раз (с 10 до 130 дней). Тепловая обработка или подогрев нефти критически важны для профилактики АСПО.'
+    },
+    debit: {
+      title: 'Влияние дебита на МРП',
+      xLabels: ['10', '80', '150'],
+      points: [
+        { x: 50, y: 200, val: 30 },
+        { x: 315, y: 100, val: 75 },
+        { x: 580, y: 60, val: 100 }
+      ],
+      conclusion: 'При увеличении дебита с 10 до 150 т/сут МРП возрастает в 3.3 раза. Высокая скорость потока естественным образом препятствует осаждению парафинов на стенках НКТ.'
     }
+  };
 
+  function changeParam(param, btn) {
+    document.querySelectorAll('.btn-outline-active').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const data = sensitivityData[param];
+    document.getElementById('chart-title').innerText = data.title;
+    
+    document.getElementById('x-label-1').innerText = data.xLabels[0];
+    document.getElementById('x-label-2').innerText = data.xLabels[1];
+    document.getElementById('x-label-3').innerText = data.xLabels[2];
+
+    const path = document.getElementById('sensitivity-path');
+    const d = `M ${data.points[0].x} ${data.points[0].y} L ${data.points[1].x} ${data.points[1].y} L ${data.points[2].x} ${data.points[2].y}`;
     path.setAttribute('d', d);
+
+    const dotsGroup = document.getElementById('sensitivity-dots');
+    dotsGroup.innerHTML = '';
+    data.points.forEach(p => {
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', p.x);
+      circle.setAttribute('cy', p.y);
+      circle.setAttribute('r', '6');
+      circle.setAttribute('fill', '#fff');
+      circle.setAttribute('stroke', '#00f2fe');
+      circle.setAttribute('stroke-width', '3');
+      
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      title.textContent = `МРП: ${p.val} дней`;
+      circle.appendChild(title);
+
+      dotsGroup.appendChild(circle);
+    });
+
+    document.getElementById('scientific-conclusion').innerText = data.conclusion;
   }
 
-  // Инициализация при загрузке
-  updateDashboard();
+  document.addEventListener('DOMContentLoaded', () => {
+    const firstBtn = document.querySelector('.btn-outline-active');
+    if (firstBtn) changeParam('paraffin', firstBtn);
+  });
 </script>
 
 </body>
